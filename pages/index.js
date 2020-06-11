@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import Router from 'next/router'
+import StudentManagement from './components/StudentManagement'
+
 
 function HomePage() {
   const [isLogin, SetLoginStatus] = useState(false);
@@ -16,7 +18,8 @@ function HomePage() {
   return (
     <React.Fragment>
       {isLogin &&
-      <div>Welcom to onlineEdu</div>}
+      <StudentManagement />
+      }
     </React.Fragment>
   );
 }
