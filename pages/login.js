@@ -1,11 +1,8 @@
 import React, {useState} from "react";
-import { Form, Input, Button } from "antd";
-import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Row, Col, Alert, Typography } from "antd";
-import axios from 'axios';
+import { Row, Col, Alert } from "antd";
 import Router from 'next/router'
-
-const { Title } = Typography;
+import API from './api/API'
+import LoginForm from './components/LoginForm'
 
 const loginPage = () => {
   const [loginFail, SetLoginStatus] = useState(false);
@@ -17,7 +14,7 @@ const loginPage = () => {
   };
 
   const onFinish = (values) => {  
-    axios.post('http://t.ztest.org/api/teacher/login', values)
+    API.Login(values)
       .then(res => {
         if (res.data["datas"]) Router.push("/index?login=true");
         else {
@@ -32,55 +29,7 @@ const loginPage = () => {
   return (
     <Row justify="center" style={{ marginTop: "5%" }}>
       <Col span={8}>
-        <Form
-          name="normal_login"
-          className="login-form"
-          initialValues={{
-            remember: true,
-          }}
-          onFinish={onFinish}
-        >
-          <Title style={{ textAlign: "center" }}>Curriculum Assistant</Title>
-          <Form.Item
-            name="email"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Email!",
-              },
-            ]}
-          >
-            <Input
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              type="email"
-              placeholder="Email"
-            />
-          </Form.Item>
-          <Form.Item
-            name="password"
-            rules={[
-              {
-                required: true,
-                message: "Please input your Password!",
-              },
-            ]}
-          >
-            <Input
-              prefix={<LockOutlined className="site-form-item-icon" />}
-              type="password"
-              placeholder="Password"
-            />
-          </Form.Item>
-          <Form.Item>
-            <Button
-              type="primary"
-              htmlType="submit"
-              className="login-form-button"
-            >
-              Log in
-            </Button>
-          </Form.Item>
-        </Form>
+       <LoginForm onFinish={onFinish} />
         {loginFail && (
           <Alert
             message="Login Failed"
