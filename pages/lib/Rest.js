@@ -4,7 +4,7 @@ class REST {
   /**
    * Returns a axios get promise object.
    *
-   * @param {url} req the url for http get
+   * @param {string} url the url for http get
    * @return {promise} axios get promise object
    */
   static get(url) {
@@ -14,8 +14,8 @@ class REST {
   /**
    * Returns a axios get promise object.
    *
-   * @param {url} req the url for http post
-   * @param {req} req the post body in Json
+   * @param {string} url the url for http post
+   * @param {string} req the post body in Json
    * @return {promise} axios post promise object
    */
   static post(url, req) {

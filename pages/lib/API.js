@@ -4,10 +4,10 @@ class API {
   /**
    * Returns a login result promise object.
    *
-   * @param {string} req the output login credential Json
+   * @param {string} req login credential in Json
    * @return {promise} login result in promise
    */
-  static teachLogin(req) {
+  static teacherLogin(req) {
     return REST.post("teacher/login", req);
   }
 

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import { Row, Col, Alert } from "antd";
 import Router from 'next/router'
-import API from './api/API'
+import API from './lib/API'
 import LoginForm from './components/LoginForm'
 
 const loginPage = () => {
@@ -14,7 +14,7 @@ const loginPage = () => {
   };
 
   const onFinish = (values) => {  
-    API.Login(values)
+    API.teacherLogin(values)
       .then(res => {
         if (res.data["datas"]) Router.push("/index?login=true");
         else {
