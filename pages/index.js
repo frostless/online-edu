@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
 import Router from 'next/router'
+import Token from './lib/Token'
 import StudentManagement from './components/StudentManagement'
-
 
 function HomePage() {
   const [isLogin, SetLoginStatus] = useState(false);
 
   useEffect(() => {
-    const isLogin = Router.query["login"]
-    SetLoginStatus(isLogin)
+    let isLogin = false;
+    if (Token.getToken()) isLogin = true;
+
+    SetLoginStatus(isLogin);
 
     if (!isLogin){
       Router.push("/login");

@@ -3,6 +3,7 @@ import { Row, Col, Alert } from "antd";
 import Router from 'next/router'
 import API from './lib/API'
 import LoginForm from './components/LoginForm'
+import Token from './lib/Token'
 
 const loginPage = () => {
   const [loginFail, SetLoginStatus] = useState(false);
@@ -13,12 +14,15 @@ const loginPage = () => {
     SetloginFailMsg(msg)
   };
 
-  const onFinish = (values) => {  
-    API.teacherLogin(values)
+  const onFinish = (credential) => {  
+    API.login(credential)
       .then(res => {
-        if (res.data["datas"]) Router.push("/index?login=true");
-        else {
-          showloginError(res.data['message']);
+        const data = res.data["datas"];
+        if (data && data['token']) {
+          Token.saveToken(data['token']);
+          Router.push("/index");
+        } else {
+          showloginError(res.data["message"]);
         }
       })
       .catch(error => {
