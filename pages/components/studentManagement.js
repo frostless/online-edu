@@ -15,7 +15,7 @@ import {css} from 'styled-components'
 // Properties
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
-]// End Properties
+// End Properties
 
 // Style Components
 const sharedBackGroundColor = css`
@@ -51,7 +51,7 @@ function StudentManagement() {
         <StyledLogoDiv />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
           <SubMenu key="sub1" icon={<TeamOutlined />} title="Students">
-            <Menu.Item key="1">Student List</Menu.Item>
+            <Menu.Item key="1" icon={<TeamOutlined />}>Student List</Menu.Item>
             <Menu.Item key="2" icon={<UserAddOutlined />}>
               Add Student
             </Menu.Item>
