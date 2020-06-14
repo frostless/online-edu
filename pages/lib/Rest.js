@@ -8,7 +8,7 @@ class REST {
    * @return {promise} axios get promise object
    */
   static get(url) {
-    return Axios.get(url, req);
+    return Axios.get(url);
   }
 
   /**

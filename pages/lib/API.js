@@ -7,8 +7,8 @@ class API {
    * @param {string} req login credential in Json
    * @return {promise} login result in promise
    */
-  static teacherLogin(req) {
-    return REST.post("teacher/login", req);
+  static login(req) {
+    return REST.post('teacher/login', req);
   }
 
   /**
@@ -16,8 +16,8 @@ class API {
    *
    * @return {promise} student list in promise
    */
-  static studentList() {
-    return REST.get(`student/list`, req);
+  static getStudentList() {
+    return REST.get('student/list');
   }
 }
 
