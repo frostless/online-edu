@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { Layout, Menu, Breadcrumb, Typography } from "antd";
+import StudentList from "./studentList"
 import styled from 'styled-components';
 import {
   UserAddOutlined,
@@ -9,19 +10,31 @@ import {
   UserOutlined,
   BookOutlined
 } from "@ant-design/icons";
+import {css} from 'styled-components'
 
 // Properties
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
-const { Title } = Typography;
-// End Properties
+]// End Properties
 
 // Style Components
-const StyledDiv= styled.div`
-padding: 24, minHeight: 360 
+const sharedBackGroundColor = css`
+  background: #fff;
+`;
+
+const StyledLogoDiv= styled.div`
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
 `
-const StyledTitle = styled(Title)`
-color: "white" 
+const StyledlayoutHeader = styled(Header)`
+  &&& {
+    ${sharedBackGroundColor}
+  }
+`;
+
+const StyledLayoutDiv= styled.div`
+  ${sharedBackGroundColor}
 `
 // End Style Components
 
@@ -35,7 +48,7 @@ function StudentManagement() {
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
-        <div className="logo" />
+        <StyledLogoDiv />
         <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
           <SubMenu key="sub1" icon={<TeamOutlined />} title="Students">
             <Menu.Item key="1">Student List</Menu.Item>
@@ -57,21 +70,20 @@ function StudentManagement() {
           </SubMenu>
         </Menu>
       </Sider>
-      <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0 }} />
+      <Layout>
+        <StyledlayoutHeader style={{ padding: 0 }} />
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>Admin Panel</Breadcrumb.Item>
             <Breadcrumb.Item>Student List</Breadcrumb.Item>
           </Breadcrumb>
-          <div
-            className="site-layout-background"
+          <StyledLayoutDiv
             style={{ padding: 24, minHeight: 360 }}
           >
-            To be implement
-          </div>
+            <StudentList />
+          </StyledLayoutDiv>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>CA</Footer>
+        <Footer style={{ textAlign: 'center' }}>Curriculum Assistant</Footer>
       </Layout>
     </Layout>
   );
