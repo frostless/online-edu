@@ -9,11 +9,16 @@ const { Title } = Typography;
 
 // Style Components
 const StyledButton = styled(Button)`
-width: 100%
-`
+  &&& {
+    width: 100%;
+  }
+`;
+
 const StyledTitle = styled(Title)`
-textAlign: "center" 
-`
+  &&& {
+    text-align: center;
+  }
+`;
 // End Style Components
 
 function LoginForm(props) {
