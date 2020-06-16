@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import API from '../lib/API'
-import Helper from '../lib/Helper'
+import API from '../../lib/API'
+import Helper from '../../lib/Helper'
 import { Table, Space } from 'antd';
 
 const columns = [
@@ -76,10 +76,9 @@ const dataMapping = (input) => {
     obj["key"] = input[i].student_id;
     obj["id"] = input[i].student_id;
     obj["name"] = input[i].student_name;
-    obj["area"] = input[i].adress;
+    obj["area"] = input[i].address;
     obj["selectedCurriculum"] = input[i].course_name;
-    obj["studentType"] = input[i].course_type;
-    obj["joinTime"] = Helper.formatDate(input[i].update_date);
+    obj["studentType"] = input[i].student_type_name;
     data.push(obj);
   }
 
@@ -95,6 +94,10 @@ function StudentList() {
   useEffect(() => {
     API.getStudentList()
     .then(res => {
+      // let data = res.data.datas.map((item, key) =>{
+      //   ...ietm,
+      //   key:key
+      // });
       let data = res.data.datas;
       data = dataMapping(data)
       setStudentData(data)
