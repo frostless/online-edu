@@ -1,70 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import API from '../../lib/API'
 import Helper from '../../lib/Helper'
-import { Table, Space } from 'antd';
+import { Input } from 'antd';
+import Columns from "./columns";
+import { Table } from 'antd';
 
-const columns = [
-  {
-    title: 'ID',
-    dataIndex: 'id',
-    key: 'id'
-  },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
-    sorter: (a, b) => a.name.localeCompare(b.name),
-  },
-  {
-    title: 'Area',
-    dataIndex: 'area',
-    key: 'area',
-    width: '10%',
-    filters: [
-      { text: '加拿大', value: '加拿大' },
-      { text: '澳洲', value: '澳洲' },
-      { text: '国内', value: '国内' },
-    ],
-    onFilter: (value, record) => record.area.includes(value),
-  },
-  {
-    title: 'Email',
-    dataIndex: 'email',
-    key: 'email',
-  },
-  {
-    title: 'Selected Curriculum',
-    dataIndex: 'selectedCurriculum',
-    key: 'selectedCurriculum',
-    width: '25%'
-  },
-  {
-    title: 'Student Type',
-    dataIndex: 'studentType',
-    key: 'studentType',
-    filters: [
-      { text: '开发', value: '开发' },
-      { text: '测试', value: '测试' },
-    ],
-    onFilter: (value, record) => record.studentType.includes(value),
-    width: '15%'
-  },
-  {
-    title: 'Join Time',
-    dataIndex: 'joinTime',
-    key: 'Join Time',
-  },
-  {
-    title: 'Action',
-    key: 'action',
-    render: (text, record) => (
-      <Space size="middle">
-        <a>Edit</a>
-        <a>Delete</a>
-      </Space>
-    ),
-  },
-];
+const { Search } = Input;
 
 const dataMapping = (input) => {
   const data = [];
@@ -89,8 +30,23 @@ const onChange = (pagination, filters, sorter, extra) => {
 //   console.log("params", pagination, filters, sorter, extra);
 };
 
+let originalData = [];
+
 function StudentList() {
   const [studentData, setStudentData] = useState([]);
+
+  const onSearch = (name) => {
+    if (name === "") {
+      setStudentData(originalData);
+    }
+
+    const filteredData = originalData.filter((student) => {
+      return student["name"].includes(name);
+    });
+
+    setStudentData(filteredData);
+  };
+
   useEffect(() => {
     API.getStudentList()
     .then(res => {
@@ -99,13 +55,24 @@ function StudentList() {
       //   key:key
       // });
       let data = res.data.datas;
-      data = dataMapping(data)
-      setStudentData(data)
+      originalData = data = dataMapping(data);
+      setStudentData(data);
     })
   }, []);
 
   return (
-    <Table columns={columns} dataSource={studentData} onChange={onChange} />
+    <React.Fragment>
+      <div>
+        <Search
+          style={{ width: "30%" }}
+          placeholder="search by name"
+          onSearch={onSearch}
+          enterButton
+        />
+      </div>
+      <br />
+      <Table columns={Columns} dataSource={studentData} onChange={onChange} />
+    </React.Fragment>
   );
 }
 

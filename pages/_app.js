@@ -8,8 +8,10 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <React.Fragment>
       <Head>
+        <meta charSet="utf-8"/>
         <title>Online Education</title>
-        <meta name="description" content="Online Education System" />
+        <meta key="description" name="description" content="Online Education System" />
+        <meta key="keywords" name="keywords" content="education,managment" />
       </Head>
       <Component {...pageProps} />
     </React.Fragment>
