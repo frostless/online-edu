@@ -1,7 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Layout, Menu, Breadcrumb, Typography } from "antd";
-import StudentList from "./studentList"
+import { Layout, Menu, Breadcrumb } from "antd";
 import styled from 'styled-components';
 import {
   UserAddOutlined,
@@ -38,7 +37,7 @@ const StyledLayoutDiv= styled.div`
 `
 // End Style Components
 
-function StudentManagement() {
+function AppLayout(props) {
   const [collapsed, ToggleCollapse] = useState(false);
 
   const onCollapse = (collapsed) => {
@@ -80,7 +79,7 @@ function StudentManagement() {
           <StyledLayoutDiv
             style={{ padding: 24, minHeight: 360 }}
           >
-            <StudentList />
+          {props.content}
           </StyledLayoutDiv>
         </Content>
         <Footer style={{ textAlign: 'center' }}>Curriculum Assistant</Footer>
@@ -89,4 +88,4 @@ function StudentManagement() {
   );
 }
 
-export default StudentManagement;
+export default AppLayout;

@@ -1,27 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Router from 'next/router'
-import Token from './lib/Token'
-import StudentManagement from './components/StudentManagement'
+import Token from '../lib/Token'
 
 function HomePage() {
-  const [isLogin, SetLoginStatus] = useState(false);
 
   useEffect(() => {
     let isLogin = false;
     if (Token.getToken()) isLogin = true;
 
-    SetLoginStatus(isLogin);
-
-    if (!isLogin){
+    if (!isLogin) {
       Router.push("/login");
+    } else {
+      Router.push("/student");
     }
   });
 
   return (
     <React.Fragment>
-      {isLogin &&
-      <StudentManagement />
-      }
     </React.Fragment>
   );
 }
