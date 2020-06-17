@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import { Row, Col, Alert } from "antd";
 import Router from 'next/router'
-import API from '../lib/API'
-import LoginForm from '../components/LoginForm'
-import Token from '../lib/Token'
+import API from '../lib/api'
+import LoginForm from '../components/loginform'
+import Token from '../lib/token'
 
 const loginPage = () => {
   const [loginFail, SetLoginStatus] = useState(false);

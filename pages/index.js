@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import Router from 'next/router'
-import Token from '../lib/Token'
+import Token from '../lib/token'
 
 function HomePage() {
 

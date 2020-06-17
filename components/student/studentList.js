@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import API from '../../lib/API'
-import Helper from '../../lib/Helper'
+import API from '../../lib/api'
+import Helper from '../../lib/helper'
 import { Input } from 'antd';
-import Columns from "./columns";
+import Columns from "./columnconfig";
 import { Table } from 'antd';
 
 const { Search } = Input;
