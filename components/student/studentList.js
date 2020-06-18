@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import API from '../../lib/api'
 import Helper from '../../lib/helper'
-import { Input } from 'antd';
 import Columns from "./columnconfig";
 import { Table } from 'antd';
-
-const { Search } = Input;
+import SearchBar from "../searchbar";
 
 const dataMapping = (input) => {
   const data = [];
@@ -35,16 +33,11 @@ let originalData = [];
 function StudentList() {
   const [studentData, setStudentData] = useState([]);
 
-  const onSearch = (name) => {
-    if (name === "") {
-      setStudentData(originalData);
-    }
+  const filterColumn = "name";
+  const placeHolder = "search by name";
 
-    const filteredData = originalData.filter((student) => {
-      return student["name"].includes(name);
-    });
-
-    setStudentData(filteredData);
+  const updateList = (newList) => {
+    setStudentData(newList);
   };
 
   useEffect(() => {
@@ -62,12 +55,12 @@ function StudentList() {
 
   return (
     <React.Fragment>
-      <div>
-        <Search
-          style={{ width: "30%" }}
-          placeholder="search by name"
-          onSearch={onSearch}
-          enterButton
+        <div>
+        <SearchBar
+          updateList={updateList}
+          filterColumn={filterColumn}
+          placeHolder={placeHolder}
+          oldList={originalData}
         />
       </div>
       <br />
