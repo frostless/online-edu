@@ -24,7 +24,6 @@ function SearchBar(props) {
   };
   return (
     <Search
-      style={{ width: "30%" }}
       placeholder={placeHolder}
       onSearch={onSearch}
       enterButton

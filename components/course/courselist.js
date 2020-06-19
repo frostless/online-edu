@@ -34,7 +34,7 @@ function CourseList() {
 
   return (
     <React.Fragment>
-      <div>
+      <div style={{ width: "30%" }}>
         <SearchBar
           updateList={updateList}
           filterColumn={filterColumn}
