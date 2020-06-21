@@ -1,4 +1,4 @@
-import AppLayout from "../../components/appLayout";
+import AppLayout from "../../components/layout/appLayout";
 import AddCourse from "../../components/course/AddCourse";
 
 const HomePage = () => {

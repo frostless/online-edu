@@ -1,4 +1,4 @@
-import AppLayout from "../../components/appLayout";
+import AppLayout from "../../components/layout/appLayout";
 import CourseList from "../../components/course/courseList";
 
 function HomePage() {
