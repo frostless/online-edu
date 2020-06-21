@@ -16,6 +16,7 @@ const dataMapping = (input) => {
     obj["id"] = input[i].student_id;
     obj["name"] = input[i].student_name;
     obj["area"] = input[i].address;
+    obj["joinTime"] = Helper.formatDate(input[i].ctime);
     obj["selectedCurriculum"] = input[i].course_name;
     obj["studentType"] = input[i].student_type_name;
     data.push(obj);
