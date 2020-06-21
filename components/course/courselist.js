@@ -24,6 +24,7 @@ function CourseList() {
       let data = res.data.datas.map((item) => {
         return {
           ...item,
+          key: item["id"],
           type: item["type_name"],
         };
       });
