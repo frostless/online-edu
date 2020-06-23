@@ -1,4 +1,5 @@
 import { Space } from "antd";
+import Link from 'next/link'
 
 const Columns = [
   {
@@ -27,9 +28,9 @@ const Columns = [
     key: "action",
     render: (text, record) => (
       <Space size="middle">
-        <a>Edit</a>
-        <a>Delete</a>
-      </Space>
+      <Link href={`/course/editcourse?id=${record["id"]}`}><a>Edit</a></Link>
+      <a>Delete</a>
+    </Space>
     ),
   },
 ];

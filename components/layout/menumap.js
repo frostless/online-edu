@@ -1,8 +1,8 @@
 class MenuMap {
   static getBreadcrumbName(path) {
     const secondaryPath = path.split("/")[2];
-    if (secondaryPath === "addcourse") {
-      return "Add Course";
+    if (secondaryPath === "editcourse") {
+      return "Edit Course";
     }
 
     const currentPath = path.split("/")[1];

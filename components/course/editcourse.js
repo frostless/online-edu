@@ -16,12 +16,15 @@ const courseTypeInvalidError = "Please ensure course type is valid";
 const errorTitle = "Adding Course Error";
 const successTitle = "Adding Course Sucessfully";
 
-function AddCourse() {
+function EditCourse(props) {
     const [courseTypeList, setCourseTypeList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [courseTypeID, setCourseTypeID] = useState();
     const [courseName, setCourseName] = useState();
     const defaultCourseType = "Select From the List";
+
+    const courseID = props['id'];
+    const isNewCourse = !courseID;
 
     const validatInput = () => {
       if(!courseName)
@@ -31,13 +34,7 @@ function AddCourse() {
         return courseTypeInvalidError;
     }
 
-    const onClick = () => {
-      const error = validatInput();
-      if (error) {
-        Notification.notify(errorTitle, error);
-        return;
-      }
-
+    const addNewCourse = () =>{
       try {
         API.addCourse({
           name: courseName,
@@ -45,14 +42,60 @@ function AddCourse() {
           typeId: courseTypeID,
         });
       } catch (e) {
-        Notification.notify(errorTitle, e);
-        return;
+        return e;
       } 
+    }
+
+    const updateCourse = () =>{
+      try {
+        API.updateCourse({
+          id: courseID,
+          name: courseName,
+          homework: "no",
+          typeId: courseTypeID,
+        });
+      } catch (e) {
+        return e;
+      } 
+    }
+
+    const processCourse = () => {
+      let response;
+      if(isNewCourse){
+        response =  addNewCourse();
+      } else {
+        response = updateCourse();
+      }
+      return response;
+    }
+
+    const getCourseNotification = (courseName) => {
+      let notification;
+      if(isNewCourse){
+        notification =  `New Course ${courseName} has been added successfully`;
+      } else {
+        notification = `Course ${courseName} has been updated successfully`;
+      }
+      return notification;
+    }
+
+    const onClick = () => {
+      let error = validatInput();
+      if (error) {
+        Notification.notify(errorTitle, error);
+        return;
+      }
+
+      error = processCourse();
+      if (error) {
+        Notification.notify(errorTitle, error);
+        return;
+      }
 
       // Cleanup
       setCourseTypeID(defaultCourseType);
       setCourseName();
-      Notification.notify(successTitle, `New Course ${courseName} has been added successfully`);
+      Notification.notify(successTitle, getCourseNotification(courseName));
     };
 
     const onCourseTypeChange = (courseTypeID) => {
@@ -108,4 +151,4 @@ function AddCourse() {
   );
 }
 
-export default AddCourse;
+export default EditCourse;
