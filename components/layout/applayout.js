@@ -80,8 +80,10 @@ function AppLayout(props) {
                 <a>Student List</a>
               </Link>
             </Menu.Item>
-            <Menu.Item key="/student/addstudent" icon={<UserAddOutlined />}>
-              Add Student
+            <Menu.Item key="/student/editstudent" icon={<UserAddOutlined />}>
+              <Link href="/student/editstudent">
+                <a>Add Student</a>
+              </Link>
             </Menu.Item>
           </SubMenu>
           <SubMenu key="course" icon={<BookOutlined />} title="Course">
