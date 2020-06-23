@@ -94,7 +94,7 @@ function AppLayout(props) {
             </Menu.Item>
             <Menu.Item key="/course/editcourse">
               <Link href="/course/editcourse">
-                <a>Edit Course</a>
+                <a>Add Course</a>
               </Link>
             </Menu.Item>
             <Menu.Item key="/course/coursetype">Course Type</Menu.Item>
