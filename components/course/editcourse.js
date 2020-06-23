@@ -13,8 +13,8 @@ const { Option } = Select;
 
 const courseNameEmptyError = "Please ensure course name is not empty";
 const courseTypeInvalidError = "Please ensure course type is valid";
-const errorTitle = "Adding Course Error";
-const successTitle = "Adding Course Sucessfully";
+const errorTitle = "Editing Course Error";
+const successTitle = "Editing Course Sucessfully";
 
 function EditCourse(props) {
     const [courseTypeList, setCourseTypeList] = useState([]);
@@ -69,16 +69,6 @@ function EditCourse(props) {
       return response;
     }
 
-    const getCourseNotification = (courseName) => {
-      let notification;
-      if(isNewCourse){
-        notification =  `New Course ${courseName} has been added successfully`;
-      } else {
-        notification = `Course ${courseName} has been updated successfully`;
-      }
-      return notification;
-    }
-
     const onClick = () => {
       let error = validatInput();
       if (error) {
@@ -95,7 +85,7 @@ function EditCourse(props) {
       // Cleanup
       setCourseTypeID(defaultCourseType);
       setCourseName();
-      Notification.notify(successTitle, getCourseNotification(courseName));
+      Notification.notify(successTitle, `Course '${courseName}' has been edited successfully`);
     };
 
     const onCourseTypeChange = (courseTypeID) => {
