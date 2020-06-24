@@ -1,29 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import API from '../../lib/api'
-import Helper from '../../lib/helper'
 import Columns from "./columnconfig";
 import { Table } from 'antd';
 import SearchBar from "../searchbar";
-
-const dataMapping = (input) => {
-  const data = [];
-  if (!Array.isArray(input)) return data;
-  if (input.length === 0) return data;
-
-  for (let i = 0; i < input.length; i++) {
-    let obj = {};
-    obj["key"] = input[i].student_id;
-    obj["id"] = input[i].student_id;
-    obj["name"] = input[i].student_name;
-    obj["area"] = input[i].address;
-    obj["joinTime"] = Helper.formatDate(input[i].ctime);
-    obj["selectedCurriculum"] = input[i].course_name;
-    obj["studentType"] = input[i].student_type_name;
-    data.push(obj);
-  }
-
-  return data;
-};
 
 const onChange = (pagination, filters, sorter, extra) => {
 //   console.log("params", pagination, filters, sorter, extra);
@@ -42,16 +21,21 @@ function StudentList() {
   };
 
   useEffect(() => {
-    API.getStudentList()
-    .then(res => {
-      // let data = res.data.datas.map((item, key) =>{
-      //   ...ietm,
-      //   key:key
-      // });
-      let data = res.data.datas;
-      originalData = data = dataMapping(data);
+    API.getStudentList().then((res) => {
+      let data = res.data.datas.map((item) => {
+        return {
+          ...item,
+          key: item["id"],
+          type: item["type_name"],
+          joinTime: item["ctime"],
+          selectedCurriculum: item["course_name"],
+          studentType: item["type_name"],
+          area: item["address"],
+        };
+      });
+      originalData = data;
       setStudentData(data);
-    })
+    });
   }, []);
 
   return (

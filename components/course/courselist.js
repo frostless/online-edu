@@ -26,6 +26,7 @@ function CourseList() {
           ...item,
           key: item["id"],
           type: item["type_name"],
+          createdAt: item["ctime"]
         };
       });
       originalData = data;
