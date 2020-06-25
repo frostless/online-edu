@@ -1,18 +1,18 @@
-import React from "react";
-import { useState, useEffect} from "react";
+import React, { useState, useEffect} from "react";
 import { useRouter } from 'next/router'
 import MenuMap from './menumap'
 import Link from 'next/link'
+import API from '../../lib/api'
 import { Layout, Menu, Breadcrumb } from "antd";
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import {
   UserAddOutlined,
   SettingOutlined,
   TeamOutlined,
   UserOutlined,
-  BookOutlined
+  BookOutlined,
+  LogoutOutlined
 } from "@ant-design/icons";
-import {css} from 'styled-components'
 
 // Properties
 const { Header, Content, Footer, Sider } = Layout;
@@ -52,6 +52,10 @@ function AppLayout(props) {
 
   const onOpenChange = (openKeys) => {
     SetOpenKeys(openKeys)
+  }
+
+  const onLogout = () => {
+    API.logout();
   }
 
   const path = router.pathname;
@@ -110,7 +114,11 @@ function AppLayout(props) {
         </Menu>
       </Sider>
       <Layout>
-        <StyledlayoutHeader style={{ padding: 0 }} />
+        <StyledlayoutHeader style={{ padding: 0 }}>
+          <div style={{ textAlign: "right", marginRight: '16px' }}>
+            <a onClick={onLogout}><LogoutOutlined style={{fontSize: '20px'}}/></a>
+          </div>
+        </StyledlayoutHeader>
         <Content style={{ margin: "0 16px" }}>
           <Breadcrumb style={{ margin: "16px 0" }}>
             <Breadcrumb.Item>
