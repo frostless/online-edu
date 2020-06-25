@@ -128,21 +128,21 @@ function EditStudent(props) {
   };
 
   useEffect(() => {
-    // API.getStudentTypeList().then((res) => {
-    //   let studentTypeList = [];
-    //   res.data.datas.forEach((element) => {
-    //     const id = element["id"],
-    //       name = element["name"];
-    //     const option = (
-    //       <Option key={id} value={id}>
-    //         {name}
-    //       </Option>
-    //     );
-    //     studentTypeList.push(option);
-    //   });
-    //   setStudentTypeList(studentTypeList);
-    //   setLoading(false);
-    // });
+    API.getStudentTypeList().then((res) => {
+      let studentTypeList = [];
+      res.data.datas.forEach((element) => {
+        const id = element["id"],
+          name = element["name"];
+        const option = (
+          <Option key={id} value={id}>
+            {name}
+          </Option>
+        );
+        studentTypeList.push(option);
+      });
+      setStudentTypeList(studentTypeList);
+      setLoading(false);
+    });
   }, []);
 
   return (
