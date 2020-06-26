@@ -11,11 +11,40 @@ const { Option } = Select;
 // Style Components
 // End Style Components
 
-function EditCourse({id}) {
+function EditCourse(props) {
+  const { id } = props;
+  const courseID = id;
+  const isNewCourse = !courseID;
+  const [form] = Form.useForm();
+
   const [courseTypeList, setCourseTypeList] = useState([]);
-  const [courseName, setCourseName] = useState();
-  const [courseTypeID, setCourseTypeID] = useState();
-  const isNewCourse = !id;
+  useEffect(() => {
+    API.getCourseTypeList().then((res) => {
+      let courseTypeList = [];
+      res.data.datas.forEach((element) => {
+        const { id, name } = element;
+        const option = (
+          <Option key={id} value={id}>
+            {name}
+          </Option>
+        );
+        courseTypeList.push(option);
+      });
+      setCourseTypeList(courseTypeList);
+    });
+  }, []);
+  
+  useEffect(() => {
+    if(isNewCourse)
+      return;
+
+    API.getCourse(courseID).then(res => {
+      const course = res.data.datas[0];
+      const {name, type_id} = course;
+      form.setFieldsValue({ courseName: name, courseType: type_id });
+    })
+  }, []);
+
 
   const addNewCourse = (course) => {
     try {
@@ -41,7 +70,7 @@ function EditCourse({id}) {
     }
 
     if (!isNewCourse) 
-      course["id"] = id;
+      course["id"] = courseID;
 
     return course;
   };
@@ -72,7 +101,7 @@ function EditCourse({id}) {
   };
 
   const onFinish = (input) => {
-    const {courseName} = input;
+    const { courseName } = input;
     let error = processCourse(input);
     if (error) {
       Notification.notify(getFailueTitle(), error);
@@ -85,39 +114,11 @@ function EditCourse({id}) {
     );
   };
 
-  useEffect(() => {
-    API.getCourseTypeList().then((res) => {
-      let courseTypeList = [];
-      res.data.datas.forEach((element) => {
-        const id = element["id"],
-          name = element["name"];
-        const option = (
-          <Option key={id} value={id}>
-            {name}
-          </Option>
-        );
-        courseTypeList.push(option);
-      });
-      setCourseTypeList(courseTypeList);
-    });
-
-    if(isNewCourse)
-      return;
-
-    API.getCourse(id).then(res => {
-      const course = res.data.datas[0];
-      const {name, type_id} = course;
-      setCourseName(name)
-      setCourseTypeID(type_id);
-    })
-  }, [id]);
-
   return (
     <div style={{ width: "30%" }}>
-      <Form name="course" onFinish={onFinish}>
+      <Form name="course" onFinish={onFinish} form={form}>
         <Form.Item
           name="courseName"
-          initialValue={courseName}
           rules={[
             {
               required: true,
@@ -129,7 +130,7 @@ function EditCourse({id}) {
         </Form.Item>
         <Form.Item
           name="courseType"
-          initialValue= "Please select from the list"
+          initialValue="Please select from the list"
           rules={[
             {
               required: true,
@@ -137,11 +138,7 @@ function EditCourse({id}) {
             },
           ]}
         >
-          <Select
-            style={{ width: "100%" }}
-          >
-            {courseTypeList}
-          </Select>
+          <Select style={{ width: "100%" }}>{courseTypeList}</Select>
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
