@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
 import Notification from "../../lib/notification";
 import styled from "styled-components";
-import { Button, Input, Select } from "antd";
+import { Form, Button, Input, Select } from "antd";
 const { Option } = Select;
 
 // Properties
@@ -11,128 +11,18 @@ const { Option } = Select;
 // Style Components
 // End Style Components
 
-const nameEmptyError = "Please ensure student name is not empty";
-const pwEmptyError = "Please ensure password is not empty";
-const courseInvalidError = "Please ensure course is valid";
-const studentTypeInvalidError = "Please ensure student type is valid";
-const errorTitle = "Editing Student Error";
-const successTitle = "Editing Student Sucessfully";
-
 function EditStudent(props) {
-  const [studentTypeList, setStudentTypeList] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [courseID, setCourseID] = useState();
-  const [studentName, setStudentName] = useState();
-  const [password, setPassword] = useState();
-  const [studentTypeID, setStudentTypeID] = useState();
-  const [address, setAddress] = useState();
-  const defaultStudentType = "Select From the List";
-  const defaultCourse = "Select From the List";
-
-  const studentID = props["id"];
+  const { id } = props;
+  const studentID = id;
   const isNewStudent = !studentID;
+  const [form] = Form.useForm();
 
-  const validatInput = () => {
-    if (!studentName) return nameEmptyError;
-
-    if (!password) return pwEmptyError;
-
-    if (!studentTypeID) return studentTypeInvalidError;
-
-    if (!courseID) return courseInvalidError;
-  };
-
-  const addNewStudent = () => {
-    try {
-      API.addStudent({
-        student_name: studentName,
-        student_type: studentTypeID,
-        course_id: courseID,
-        address: address,
-      });
-    } catch (e) {
-      return e;
-    }
-  };
-
-  const updateStudent = () => {
-    try {
-      API.updateStudent({
-        student_id: courseID,
-        student_name: studentName,
-        student_type: studentTypeID,
-        course_id: courseID,
-        address: address,
-      });
-    } catch (e) {
-      return e;
-    }
-  };
-
-  const processstudent = () => {
-    let response;
-    if (isNewStudent) {
-      response = addNewStudent();
-    } else {
-      response = updateStudent();
-    }
-    return response;
-  };
-
-  const onClick = () => {
-    let error = validatInput();
-    if (error) {
-      Notification.notify(errorTitle, error);
-      return;
-    }
-
-    error = processstudent();
-    if (error) {
-      Notification.notify(errorTitle, error);
-      return;
-    }
-
-    // Cleanup
-    setStudentTypeID(defaultStudentType);
-    setCourseID(defaultCourse);
-    setStudentName();
-    setPassword();
-    setAddress();
-    Notification.notify(
-      successTitle,
-      `Student '${studentName}' has been edited successfully`
-    );
-  };
-
-  const onStudentTypeChange = (studentTypeID) => {
-    setStudentTypeID(studentTypeID);
-  };
-
-  const onStudentNameChange = (e) => {
-    const studentName = e.target.value;
-    setStudentName(studentName);
-  };
-
-  const onPasswordChange = (e) => {
-    const password = e.target.value;
-    setPassword(password);
-  };
-
-  const onCourseChange = (courseID) => {
-    setCourseID(courseID);
-  };
-
-  const onAddressChange = (e) => {
-    const address = e.target.value;
-    setAddress(address);
-  };
-
+  const [studentTypeList, setStudentTypeList] = useState([]);
   useEffect(() => {
     API.getStudentTypeList().then((res) => {
       let studentTypeList = [];
       res.data.datas.forEach((element) => {
-        const id = element["id"],
-          name = element["name"];
+        const { id, name } = element;
         const option = (
           <Option key={id} value={id}>
             {name}
@@ -141,73 +31,177 @@ function EditStudent(props) {
         studentTypeList.push(option);
       });
       setStudentTypeList(studentTypeList);
-      setLoading(false);
     });
   }, []);
 
+  const [courseList, setCourseList] = useState();
+  useEffect(() => {
+    API.getCourseList().then((res) => {
+      let courseList = [];
+      res.data.datas.forEach((element) => {
+        const { id, name } = element;
+        const option = (
+          <Option key={id} value={id}>
+            {name}
+          </Option>
+        );
+        courseList.push(option);
+      });
+      setCourseList(courseList);
+    });
+  }, []);
+
+  useEffect(() => {
+    if(isNewStudent)
+      return;
+
+    API.getStudent(studentID).then(res => {
+      const student = res.data.datas[0];
+      const { name, address, type_id, course_name } = student;
+      form.setFieldsValue({
+        studentName: name,
+        address: address,
+        studentType: type_id,
+        courseType: course_name,
+      });
+    })
+  }, []);
+
+  const addNewStudent = (student) => {
+    try {
+      API.addStudent(student);
+    } catch (e) {
+      return e;
+    }
+  };
+
+  const updateStudent = (student) => {
+    try {
+      API.updateStudent(student);
+    } catch (e) {
+      return e;
+    }
+  };
+
+  const makeStudent = (input) => {
+    let student = {
+      name: input["studentName"],
+      type_id: input["studentType"],
+      course_id: input["courseType"],
+      address: input["address"],
+    };
+
+    if (!isNewStudent) 
+      student["id"] = studentID;
+
+    return student;
+  };
+
+  const processStudent = (input) => {
+    let response;
+    let student = makeStudent(input);
+    if (isNewStudent) {
+      response = addNewStudent(student);
+    } else {
+      response = updateStudent(student);
+    }
+    return response;
+  };
+
+  const getSuccessTitle = () => {
+    return isNewStudent
+      ? "Adding Student Successfully"
+      : "Editing Student Successfully";
+  };
+
+  const getFailueTitle = () => {
+    return isNewStudent ? "Adding Student Failed" : "Editing Student Failed";
+  };
+
+  const getSuccessContent = (studentName) => {
+    return isNewStudent
+      ? `Student '${studentName}' has been added successfully`
+      : `Student '${studentName}' has been edited successfully`;
+  };
+
+  const onFinish = (input) => {
+    const { studentName } = input;
+    let error = processStudent(input);
+    if (error) {
+      Notification.notify(getFailueTitle(), error);
+      return;
+    }
+
+    Notification.notify(getSuccessTitle(), 
+      getSuccessContent(studentName));
+  };
+
   return (
     <div style={{ width: "30%" }}>
-      <div>
-        <Input
-          placeholder="Student Name"
-          value={studentName}
-          onChange={onStudentNameChange}
-        />
-      </div>
-      <br />
-      <div>
-        <Input
-          placeholder="Password"
-          value={password}
-          onChange={onPasswordChange}
-        />
-      </div>
-      <br />
-      <div>
-        <Select
-          defaultValue={defaultStudentType}
-          value={studentTypeID}
-          loading={loading}
-          onChange={onStudentTypeChange}
-          style={{ width: "100%" }}
+      <Form name="course" onFinish={onFinish} form={form}>
+        <Form.Item
+          name="studentName"
+          rules={[
+            {
+              required: true,
+              message: "Please enter student name!",
+            },
+          ]}
         >
-          {studentTypeList}
-        </Select>
-      </div>
-      <br />
-      <div>
-        <Select
-          defaultValue={defaultCourse}
-          value={courseID}
-          loading={loading}
-          onChange={onCourseChange}
-          style={{ width: "100%" }}
+          <Input type="text" placeholder="Student Name" />
+        </Form.Item>
+        <Form.Item
+          name="password"
+          rules={[
+            {
+              required: true,
+              message: "Please enter password!",
+            },
+          ]}
         >
-          <Option key="1" value="1">
-            demo 1
-          </Option>
-          <Option key="2" value="2">
-            demo 2
-          </Option>
-          <Option key="3" value="3">
-            demo 3
-          </Option>
-        </Select>
-      </div>
-      <br />
-      <div>
-        <Input
-          placeholder="Address"
-          value={address}
-          onChange={onAddressChange}
-        />
-      </div>
-      <br />
-      <div>
-        <Button type="primary" onClick={onClick}>
-          Save Student
-        </Button>
-      </div>
+          <Input type="text" placeholder="Password" />
+        </Form.Item>
+        <Form.Item
+          name="studentType"
+          initialValue="Please select from the list"
+          rules={[
+            {
+              required: true,
+              message: "Please select student type!",
+            },
+          ]}
+        >
+          <Select style={{ width: "100%" }}> {studentTypeList} </Select>
+        </Form.Item>
+        <Form.Item
+          name="courseType"
+          initialValue="Please select from the list"
+          rules={[
+            {
+              required: true,
+              message: "Please select course!",
+            },
+          ]}
+        >
+          <Select style={{ width: "100%" }}>{courseList}</Select>
+        </Form.Item>
+        <Form.Item
+          name="address"
+          rules={[
+            {
+              required: true,
+              message: "Please enter address!",
+            },
+          ]}
+        >
+          <Input type="text" placeholder="Address" />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Save Student
+          </Button>
+        </Form.Item>
+      </Form>
     </div>
   );
 }
