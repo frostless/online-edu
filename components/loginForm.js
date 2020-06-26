@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Typography } from "antd";
+import { Form, Input, Button, Typography, Checkbox } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import styled from 'styled-components';
 
@@ -61,6 +61,9 @@ function LoginForm(props) {
           type="password"
           placeholder="Password"
         />
+      </Form.Item>
+      <Form.Item name="remember" valuePropName="checked">
+        <Checkbox>Remember me</Checkbox>
       </Form.Item>
       <Form.Item>
         <StyledButton type="primary" htmlType="submit">
