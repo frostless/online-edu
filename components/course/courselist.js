@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
+import timeago from '../../lib/timeago'
 import Columns from "./columnsconfig";
 import { Table } from "antd";
 import SearchBar from "../searchbar";
@@ -26,7 +27,7 @@ function CourseList() {
           ...item,
           key: item["id"],
           type: item["type_name"],
-          createdAt: item["ctime"]
+          createdAt: timeago.format(new Date(item["ctime"]))
         };
       });
       originalData = data;

@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import API from '../../lib/api'
+import timeago from '../../lib/timeago'
 import Columns from "./columnconfig";
 import { Table } from 'antd';
 import SearchBar from "../searchbar";
@@ -33,7 +34,7 @@ function StudentList() {
         return {
           ...item,
           key: item["id"],
-          joinTime: item["ctime"],
+          joinTime: timeago.format(new Date(item["ctime"])),
           selectedCurriculum: getSelectedCurriculum(item["courses"]),
           studentType: item["type_name"],
           area: item["address"],
