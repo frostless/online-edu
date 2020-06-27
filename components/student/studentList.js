@@ -20,15 +20,21 @@ function StudentList() {
     setStudentData(newList);
   };
 
+  const getSelectedCurriculum = (curriculumArray) => {
+    let array = curriculumArray.map((item) => {
+      return item["name"];
+    });
+    return array.toString();
+  };
+
   useEffect(() => {
     API.getStudentList().then((res) => {
       let data = res.data.datas.map((item) => {
         return {
           ...item,
           key: item["id"],
-          type: item["type_name"],
           joinTime: item["ctime"],
-          selectedCurriculum: item["course_name"],
+          selectedCurriculum: getSelectedCurriculum(item["courses"]),
           studentType: item["type_name"],
           area: item["address"],
         };
