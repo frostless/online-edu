@@ -34,35 +34,17 @@ function EditStudent(props) {
     });
   }, []);
 
-  const [courseList, setCourseList] = useState();
-  useEffect(() => {
-    API.getCourseList().then((res) => {
-      let courseList = [];
-      res.data.datas.forEach((element) => {
-        const { id, name } = element;
-        const option = (
-          <Option key={id} value={id}>
-            {name}
-          </Option>
-        );
-        courseList.push(option);
-      });
-      setCourseList(courseList);
-    });
-  }, []);
-
   useEffect(() => {
     if(isNewStudent)
       return;
 
     API.getStudent(studentID).then(res => {
       const student = res.data.datas[0];
-      const { name, address, type_id, course_name } = student;
+      const { name, address, type_id } = student;
       form.setFieldsValue({
         studentName: name,
         address: address,
-        studentType: type_id,
-        courseType: course_name,
+        studentType: type_id
       });
     })
   }, []);
@@ -87,7 +69,6 @@ function EditStudent(props) {
     let student = {
       name: input["studentName"],
       type_id: input["studentType"],
-      course_id: input["courseType"],
       address: input["address"],
     };
 
@@ -159,7 +140,7 @@ function EditStudent(props) {
             },
           ]}
         >
-          <Input type="text" placeholder="Password" />
+          <Input type="password" placeholder="Password" />
         </Form.Item>
         <Form.Item
           name="studentType"
@@ -172,18 +153,6 @@ function EditStudent(props) {
           ]}
         >
           <Select style={{ width: "100%" }}> {studentTypeList} </Select>
-        </Form.Item>
-        <Form.Item
-          name="courseType"
-          initialValue="Please select from the list"
-          rules={[
-            {
-              required: true,
-              message: "Please select course!",
-            },
-          ]}
-        >
-          <Select style={{ width: "100%" }}>{courseList}</Select>
         </Form.Item>
         <Form.Item
           name="address"
