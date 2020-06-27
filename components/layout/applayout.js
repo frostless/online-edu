@@ -1,22 +1,13 @@
-import React, { useState, useEffect} from "react";
-import { useRouter } from 'next/router'
-import MenuMap from './menumap'
-import Link from 'next/link'
+import React, { useState } from "react";
 import API from '../../lib/api'
-import { Layout, Menu, Breadcrumb } from "antd";
+import { Layout } from "antd";
 import styled, {css} from 'styled-components';
-import {
-  UserAddOutlined,
-  SettingOutlined,
-  TeamOutlined,
-  UserOutlined,
-  BookOutlined,
-  LogoutOutlined
-} from "@ant-design/icons";
+import { LogoutOutlined } from "@ant-design/icons";
+import AppMenu from "./appmenu";
+import AppBreadcrumb from "./appbreadcrumb";
 
 // Properties
 const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
 // End Properties
 
 // Style Components
@@ -42,76 +33,20 @@ const StyledLayoutDiv= styled.div`
 
 function AppLayout(props) {
   const [collapsed, ToggleCollapse] = useState(false);
-  const [openKeys, SetOpenKeys] = useState([]);
-  const [selectedKeys, SetSelectedKeys] = useState([]);
-  const router = useRouter();
 
   const onCollapse = (collapsed) => {
     ToggleCollapse(collapsed);
   };
 
-  const onOpenChange = (openKeys) => {
-    SetOpenKeys(openKeys)
-  }
-
   const onLogout = () => {
     API.logout();
   }
-
-  const path = router.pathname;
-  const breadcrumbName = MenuMap.getBreadcrumbName(path);
-
-  useEffect(() => {
-    const currentPath = path.split("/")[1];
-    SetOpenKeys([currentPath])
-    SetSelectedKeys([path])
-  }, []);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={collapsed} onCollapse={onCollapse}>
         <StyledLogoDiv />
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={selectedKeys}
-          openKeys={openKeys}
-          onOpenChange={onOpenChange}
-        >
-          <SubMenu key="student" icon={<TeamOutlined />} title="Students">
-            <Menu.Item key="/student" icon={<TeamOutlined />}>
-              <Link href="/student">
-                <a>Student List</a>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/student/editstudent" icon={<UserAddOutlined />}>
-              <Link href="/student/editstudent">
-                <a>Add Student</a>
-              </Link>
-            </Menu.Item>
-          </SubMenu>
-          <SubMenu key="course" icon={<BookOutlined />} title="Course">
-            <Menu.Item key="/course">
-              <Link href="/course">
-                <a>Course List</a>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/course/editcourse">
-              <Link href="/course/editcourse">
-                <a>Add Course</a>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/course/coursetype">Course Type</Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub3" icon={<UserOutlined />} title="Teacher">
-            <Menu.Item key="6">To Do </Menu.Item>
-            <Menu.Item key="7">To Do</Menu.Item>
-          </SubMenu>
-          <SubMenu key="sub4" icon={<SettingOutlined />} title="Setting">
-            <Menu.Item key="8">To Do </Menu.Item>
-            <Menu.Item key="9">To Do</Menu.Item>
-          </SubMenu>
-        </Menu>
+      <AppMenu />
       </Sider>
       <Layout>
         <StyledlayoutHeader style={{ padding: 0 }}>
@@ -120,14 +55,7 @@ function AppLayout(props) {
           </div>
         </StyledlayoutHeader>
         <Content style={{ margin: "0 16px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>
-              <Link href="/">
-                <a>Admin Panel</a>
-              </Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>{breadcrumbName}</Breadcrumb.Item>
-          </Breadcrumb>
+          <AppBreadcrumb />
           <StyledLayoutDiv style={{ padding: 24, minHeight: 360 }}>
             {props.content}
           </StyledLayoutDiv>
