@@ -1,7 +1,9 @@
 import { Space } from "antd";
 import Link from 'next/link'
 
-const Columns = [
+const nameColumn = "name";
+
+const columns = [
   {
     title: "ID",
     dataIndex: "id",
@@ -9,9 +11,9 @@ const Columns = [
   },
   {
     title: "Name",
-    dataIndex: "name",
-    key: "name",
-    sorter: (a, b) => a.name.localeCompare(b.name),
+    dataIndex: nameColumn,
+    key: nameColumn,
+    sorter: (a, b) => a[nameColumn].localeCompare(b[nameColumn]),
   },
   {
     title: "Type",
@@ -35,4 +37,6 @@ const Columns = [
   },
 ];
 
-export default Columns
+const placeHolder = "search by name";
+const filterColumn = nameColumn;
+export { columns, filterColumn, placeHolder };

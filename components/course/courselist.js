@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
 import timeago from '../../lib/timeago'
-import Columns from "./columnsconfig";
+import {columns, filterColumn, placeHolder} from "./columnsconfig";
 import { Table } from "antd";
 import SearchBar from "../searchbar";
 
@@ -13,8 +13,6 @@ let originalData = [];
 
 function CourseList() {
   const [courseData, setCourseData] = useState([]);
-  const filterColumn = "name";
-  const placeHolder = "search by name";
 
   const updateList = (newList) => {
     setCourseData(newList);
@@ -46,7 +44,7 @@ function CourseList() {
         />
       </div>
       <br />
-      <Table columns={Columns} dataSource={courseData} onChange={onChange} />
+      <Table columns={columns} dataSource={courseData} onChange={onChange} />
     </React.Fragment>
   );
 }

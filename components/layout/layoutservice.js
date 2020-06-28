@@ -7,6 +7,8 @@ class LayoutService {
       return id ? "Edit Course" : "Add Course";
     } else if (secondaryPath === "editstudent") {
       return id ? "Edit Student": "Add Student";
+    } else if (secondaryPath === "selections") {
+      return "Selections";
     }
 
     const currentPath = path.split("/")[1];

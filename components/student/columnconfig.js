@@ -1,7 +1,8 @@
 import { Space } from "antd";
 import Link from 'next/link'
 
-const Columns = [
+const listNameColumn = "name";
+const listColumns = [
   {
     title: "ID",
     dataIndex: "id",
@@ -9,14 +10,14 @@ const Columns = [
   },
   {
     title: "Name",
-    dataIndex: "name",
-    key: "name",
-    sorter: (a, b) => a.name.localeCompare(b.name),
+    dataIndex: listNameColumn,
+    key: listNameColumn,
+    sorter: (a, b) => a[listNameColumn].localeCompare(b[listNameColumn]),
   },
   {
     title: "Area",
-    dataIndex: "area",
-    key: "area",
+    dataIndex: "address",
+    key: "address",
     width: "10%",
     filters: [
       { text: "加拿大", value: "加拿大" },
@@ -50,7 +51,7 @@ const Columns = [
   {
     title: "Join Time",
     dataIndex: "joinTime",
-    key: "Join Time",
+    key: "joinTime",
   },
   {
     title: "Action",
@@ -64,4 +65,46 @@ const Columns = [
   },
 ];
 
-export default Columns
+const listPlaceHolder = "search by name";
+const listFilterColumn = listNameColumn;
+export { listColumns, listFilterColumn, listPlaceHolder };
+
+
+const selectionNameColumn = "student_name";
+const selectionColumns = [
+  {
+    title: "ID",
+    dataIndex: "id",
+    key: "id",
+  },
+  {
+    title: "Name",
+    dataIndex: selectionNameColumn,
+    key: selectionNameColumn,
+    sorter: (a, b) => a[selectionNameColumn].localeCompare(b[selectionNameColumn]),
+  },
+  {
+    title: "Selected Course",
+    dataIndex: "course_name",
+    key: "course_name"
+  },
+  {
+    title: "Course date",
+    dataIndex: "course_date",
+    key: "course_date"
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (text, record) => (
+      <Space size="middle">
+        <Link href={`/student/editstudentcourse?id=${record["id"]}`}><a>Edit</a></Link>
+        <a>Delete</a>
+      </Space>
+    ),
+  },
+];
+
+const selectionPlaceHolder = "search by name";
+const selectionFilterColumn = selectionNameColumn;
+export { selectionColumns, selectionFilterColumn, selectionPlaceHolder };

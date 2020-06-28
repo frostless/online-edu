@@ -7,6 +7,7 @@ import {
   TeamOutlined,
   UserOutlined,
   BookOutlined,
+  SelectOutlined,
 } from "@ant-design/icons";
 import LayoutService from "./layoutservice";
 const { SubMenu } = Menu;
@@ -44,6 +45,11 @@ function AppMenu() {
         <Menu.Item key="/student/editstudent" icon={<UserAddOutlined />}>
           <Link href="/student/editstudent">
             <a>Add Student</a>
+          </Link>
+        </Menu.Item>
+        <Menu.Item key="/student/selections" icon={<SelectOutlined />}>
+          <Link href="/student/selections">
+            <a>Selections</a>
           </Link>
         </Menu.Item>
       </SubMenu>
