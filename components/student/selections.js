@@ -14,9 +14,9 @@ let originalData = [];
 
 function Selections() {
   const [studentData, setStudentData] = useState([]);
-  const [newStudentCourse, setNewStudentCourse] = useState(false);
+  const [updatedTimes, setUpdatedTimes] = useState(0);
   const handleStudentCourseAdded = () => {
-    setNewStudentCourse(true);
+    setUpdatedTimes(updatedTimes + 1);
   };
   useEffect(() => {
     API.getStudentCourseList().then((res) => {
@@ -29,9 +29,8 @@ function Selections() {
       });
       originalData = data;
       setStudentData(data);
-      console.log(data.length)
     });
-  }, [newStudentCourse]);
+  }, [updatedTimes]);
 
   const updateList = (newList) => {
     setStudentData(newList);
