@@ -46,17 +46,17 @@ function EditCourse(props) {
   }, []);
 
 
-  const addNewCourse = (course) => {
+  const addNewCourse = async (course) => {
     try {
-      API.addCourse(course);
+      await API.addCourse(course);
     } catch (e) {
       return e;
     }
   };
 
-  const updateCourse = (course) => {
+  const updateCourse = async (course) => {
     try {
-      API.updateCourse(course);
+      await API.updateCourse(course);
     } catch (e) {
       return e;
     }
@@ -75,13 +75,13 @@ function EditCourse(props) {
     return course;
   };
 
-  const processCourse = (input) => {
+  const processCourse = async (input) => {
     let response;
     let course = makCourse(input);
     if (isNewCourse) {
-      response = addNewCourse(course);
+      response = await addNewCourse(course);
     } else {
-      response = updateCourse(course);
+      response = await updateCourse(course);
     }
     return response;
   };
@@ -100,9 +100,9 @@ function EditCourse(props) {
       : `Course '${courseName}' has been edited successfully`;
   };
 
-  const onFinish = (input) => {
+  const onFinish = async (input) => {
     const { courseName } = input;
-    let error = processCourse(input);
+    let error = await processCourse(input);
     if (error) {
       Notification.notify(getFailueTitle(), error);
       return;
@@ -134,7 +134,8 @@ function EditCourse(props) {
           rules={[
             {
               required: true,
-              message: "Please select course type!",
+              pattern: new RegExp("^(?!Please select from the list$)"),
+              message: "Please select a valid course type!",
             },
           ]}
         >

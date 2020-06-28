@@ -49,17 +49,17 @@ function EditStudent(props) {
     })
   }, []);
 
-  const addNewStudent = (student) => {
+  const addNewStudent = async (student) => {
     try {
-      API.addStudent(student);
+      await API.addStudent(student);
     } catch (e) {
       return e;
     }
   };
 
-  const updateStudent = (student) => {
+  const updateStudent = async (student) => {
     try {
-      API.updateStudent(student);
+      await API.updateStudent(student);
     } catch (e) {
       return e;
     }
@@ -78,13 +78,13 @@ function EditStudent(props) {
     return student;
   };
 
-  const processStudent = (input) => {
+  const processStudent = async (input) => {
     let response;
     let student = makeStudent(input);
     if (isNewStudent) {
-      response = addNewStudent(student);
+      response = await addNewStudent(student);
     } else {
-      response = updateStudent(student);
+      response = await updateStudent(student);
     }
     return response;
   };
@@ -105,9 +105,9 @@ function EditStudent(props) {
       : `Student '${studentName}' has been edited successfully`;
   };
 
-  const onFinish = (input) => {
+  const onFinish = async (input) => {
     const { studentName } = input;
-    let error = processStudent(input);
+    let error = await processStudent(input);
     if (error) {
       Notification.notify(getFailueTitle(), error);
       return;
@@ -148,7 +148,8 @@ function EditStudent(props) {
           rules={[
             {
               required: true,
-              message: "Please select student type!",
+              pattern: new RegExp("^(?!Please select from the list$)"),
+              message: "Please select a valid student type!",
             },
           ]}
         >
