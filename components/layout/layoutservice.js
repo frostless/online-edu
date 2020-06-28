@@ -15,7 +15,7 @@ class LayoutService {
     if (currentPath === "student") {
       return "Student List";
     } else if (currentPath === "course") {
-      return "Course list";
+      return "Course List";
     }
   }
 

@@ -1,18 +1,8 @@
 import * as enzyme from 'enzyme';
-import Helper from "../lib/helper";
 import Adapter from 'enzyme-adapter-react-16';
-import SearchBar from "../components/searchbar";
+import SearchBar from "../../components/searchbar";
 
 enzyme.configure({ adapter: new Adapter() });
-
-describe("Test Helper Format Date Function", () => {
-    test("formatDate returns correctly", () => {
-        const input = '2020-06-19T07:29:58.000Z';
-        expect(Helper.formatDate(input)).toBeDefined(); 
-        expect(Helper.formatDate(input)).toBe('2020-06-19'); 
-        expect(typeof Helper.formatDate(input)).toBe('string');
-    });
-})
 
 describe("Test SearchBar OnSearch Function", () => {
     //test case
