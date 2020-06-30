@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
-import { selectionColumns, selectionFilterColumn, selectionPlaceHolder } from "./columnconfig";
-import { Table, Button } from "antd";
+import { Table, Button, Space } from "antd";
 import Helper from "../../lib/helper";
 import SearchBar from "../searchbar";
+import Link from 'next/link'
 import AddCourseModal from "./addcoursemodal";
+
+const { Column } = Table;
 
 const onChange = (pagination, filters, sorter, extra) => {
   //   console.log("params", pagination, filters, sorter, extra);
@@ -14,9 +16,9 @@ let originalData = [];
 
 function Selections() {
   const [studentData, setStudentData] = useState([]);
-  const [updatedTimes, setUpdatedTimes] = useState(0);
+  const [updateCounter, setUpdateCounter] = useState(0);
   const handleStudentCourseAdded = () => {
-    setUpdatedTimes(updatedTimes + 1);
+    setUpdateCounter(updateCounter + 1);
   };
   useEffect(() => {
     API.getStudentCourseList().then((res) => {
@@ -30,7 +32,7 @@ function Selections() {
       originalData = data;
       setStudentData(data);
     });
-  }, [updatedTimes]);
+  }, [updateCounter]);
 
   const updateList = (newList) => {
     setStudentData(newList);
@@ -53,17 +55,41 @@ function Selections() {
       <div style={{ width: "30%" }}>
         <SearchBar
           updateList={updateList}
-          filterColumn={selectionFilterColumn}
-          placeHolder={selectionPlaceHolder}
+          filterColumn="student_name"
+          placeHolder="search by name"
           oldList={originalData}
         />
       </div>
       <br />
-      <Table
-        columns={selectionColumns}
-        dataSource={studentData}
-        onChange={onChange}
-      />
+      <Table dataSource={studentData} onChange={onChange}>
+       <Column title="ID" dataIndex="id" key="id" />
+        <Column
+          title="Name"
+          dataIndex="student_name"
+          key="student_name"
+          sorter={(a, b) => a["student_name"].localeCompare(b["student_name"])}
+        />
+         <Column
+          title="Selected Course"
+          dataIndex="course_name"
+          key="course_name"
+        />
+          <Column
+          title="Course date"
+          dataIndex="course_date"
+          key="course_date"
+        />
+        <Column
+          title="Action"
+          dataIndex="action"
+          render={(text, record) => (
+            <Space size="middle">
+            <Link href={`/student/editstudentcourse?id=${record["id"]}`}><a>Edit</a></Link>
+            <a>Delete</a>
+          </Space>
+          )}
+        />
+        </Table>
     </React.Fragment>
   );
 }
