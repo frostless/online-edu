@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
-import Helper from "../../lib/helper";
 import Notification from "../../lib/notification";
 import { Modal, Button, Select, Form, DatePicker } from "antd";
 
@@ -73,7 +72,7 @@ function AddCoueseModal(props) {
   };
 
   const makeStudentCourse = (input) => {
-    let courseDate = Helper.formatDate(input["course_date"]["_d"]);
+    let courseDate =input["course_date"].format('YYYY-MM-DD')
     input["course_date"] = courseDate;
 
     return input;
