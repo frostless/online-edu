@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
-import { Table, Button, Space, Tabs, Calendar, Badge } from "antd";
+import { Table, Button, Space, Tabs, Calendar } from "antd";
 import Helper from "../../lib/helper";
 import SearchBar from "../searchbar";
 import Link from 'next/link'
@@ -48,46 +48,30 @@ function Selections() {
   };
 
   const onTabChange = (key) => {
-    console.log(key);
   }
 
   const getListData = (value) => {
-    let listData;
-    let date = value.date();
-    let course = studentData.find((value, index) => {
-      return Helper.getDate(value["course_date"]) == date;
-    })
-    console.log(course)
-    return listData || [];
-  }
+    const date = value.format("YYYY-MM-DD");
+    let courses = studentData.filter((value, index) => {
+      return (
+        Helper.formatDate(value["course_date"]) === date
+      );
+    });
+
+    return courses || [];
+  };
   
   const dateCellRender = (value) => {
     const listData = getListData(value);
     return (
-      <ul className="events">
+      <ul>
         {listData.map(item => (
-          <li key={item.content}>
-            <Badge status={item.type} text={item.content} />
+          <li key={item["id"]}>
+            {item["course_name"]}
           </li>
         ))}
       </ul>
     );
-  }
-  
-  const getMonthData = (value) => {
-    if (value.month() === 8) {
-      return 1394;
-    }
-  }
-  
-  const monthCellRender = (value) => {
-    const num = getMonthData(value);
-    return num ? (
-      <div className="notes-month">
-        <section>{num}</section>
-        <span>Backlog number</span>
-      </div>
-    ) : null;
   }
 
   return (
@@ -147,7 +131,7 @@ function Selections() {
           </Table>
         </TabPane>
         <TabPane tab="Calender Mode" key="calenderMode">
-          <Calendar dateCellRender={dateCellRender} monthCellRender={monthCellRender} />
+          <Calendar dateCellRender={dateCellRender} mode="month" onSelect={()=>{alert(123)}} />
         </TabPane>
       </Tabs>
     </React.Fragment>
