@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
 import timeago from '../../lib/timeago'
-import { Table, Space } from 'antd';
+import { Table, Space, Popconfirm, message } from 'antd';
 import Link from 'next/link'
 import SearchBar from "../searchbar";
 
@@ -39,6 +39,7 @@ function CourseList() {
 
   const onDelete = async (course) => {
     await API.deleteCourse({ id: course["id"] });
+    message.success('Course Deleted');
     setupdateCounter(updateCounter + 1);
   };
 
@@ -68,9 +69,18 @@ function CourseList() {
           dataIndex="action"
           render={(text, record) => (
             <Space size="middle">
-            <Link href={`/course/editcourse?id=${record["id"]}`}><a>Edit</a></Link>
-            <a onClick={()=>{onDelete(record)}}>Delete</a>
-          </Space>
+              <Link href={`/course/editcourse?id=${record["id"]}`}>
+                <a>Edit</a>
+              </Link>
+              <Popconfirm
+                title="Are you sure delete this course?"
+                onConfirm={()=>{onDelete(record)}}
+                okText="Yes"
+                cancelText="No"
+              >
+                <a>Delete</a>
+              </Popconfirm>
+            </Space>
           )}
         />
       </Table>
