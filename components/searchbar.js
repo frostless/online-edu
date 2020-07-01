@@ -10,18 +10,8 @@ const { Search } = Input;
 // End Style Components
 
 function SearchBar(props) {
-  const updateList = props.updateList;
-  const placeHolder = props.placeHolder;
-  const filterColumn = props.filterColumn;
-  const oldList = props.oldList;
+  const { onSearch, placeHolder } = props;
 
-  const onSearch = (value) => {
-    const newList = oldList.filter((course) => {
-      return course[filterColumn].includes(value);
-    });
-
-    updateList(newList);
-  };
   return (
     <Search
       placeholder={placeHolder}

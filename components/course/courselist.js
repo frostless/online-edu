@@ -12,7 +12,10 @@ let originalData = [];
 function CourseList() {
   const [courseData, setCourseData] = useState([]);
 
-  const updateList = (newList) => {
+  const onSearch = (value) => {
+    const newList = originalData.filter((item) => {
+      return item["name"].includes(value);
+    });
     setCourseData(newList);
   };
 
@@ -47,10 +50,8 @@ function CourseList() {
     <React.Fragment>
       <div style={{ width: "30%" }}>
         <SearchBar
-          updateList={updateList}
-          filterColumn="name"
           placeHolder="search by name"
-          oldList={originalData}
+          onSearch={onSearch}
         />
       </div>
       <br />

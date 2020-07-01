@@ -36,10 +36,12 @@ function Selections() {
     });
   }, [updateCounter]);
 
-  const updateList = (newList) => {
+  const onSearch = (value) => {
+    const newList = originalData.filter((item) => {
+      return item["student_name"].includes(value);
+    });
     setStudentData(newList);
   };
-
   const [modalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -103,10 +105,8 @@ function Selections() {
       />
       <div style={{ width: "30%" }}>
         <SearchBar
-          updateList={updateList}
-          filterColumn="student_name"
+          onSearch={onSearch}
           placeHolder="search by name"
-          oldList={originalData}
         />
       </div>
       <br />
