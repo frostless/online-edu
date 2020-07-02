@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
-import { Table, Button, Space, Tabs, Calendar } from "antd";
+import { Table, Button, Space, Tabs, Calendar, Modal, Select } from "antd";
 import Helper from "../../lib/helper";
 import SearchBar from "../searchbar";
 import Link from 'next/link'
 import AddCourseModal from "./addcoursemodal";
+
+const { Option } = Select;
 
 const { TabPane } = Tabs;
 
@@ -74,6 +76,71 @@ function Selections() {
     );
   }
 
+  const [studentCourseData, setStudentCourseData] = useState([]);
+  const onCellSelect = (value) => {
+    setVisible(true);
+    const date = value.format("YYYY-MM-DD");
+    let query = `?date=${date}`;
+    if (courseID) {
+      query += `&course_id=${courseID}`;
+    }
+    API.getStudentCourseList(query).then((res) => {
+      let data = res.data.datas.map((item) => {
+        return {
+          ...item,
+          key: item["id"],
+        };
+      });
+      setStudentCourseData(data);
+  })
+}
+
+  const [visible, setVisible] = useState(false);
+  const closemModal = () => {
+    setVisible(false);
+  };
+
+  const [courseList, setCourseList] = useState([]);
+  useEffect(() => {
+    API.getCourseList().then((res) => {
+      let courseList = [];
+      courseList.push(
+        <Option key={0} value={0}>
+          All
+        </Option>
+      );
+      res.data.datas.forEach((element) => {
+        const { id, name } = element;
+        const option = (
+          <Option key={id} value={id}>
+            {name}
+          </Option>
+        );
+        courseList.push(option);
+      });
+      setCourseList(courseList);
+    });
+  }, []);
+
+  const [courseID, setCourseID] = useState();
+  const onCourseChange = (value) => {
+    setCourseID(value);
+    let query = "";
+    if(value){
+      query += `?course_id=${value}`
+    }
+    API.getStudentCourseList(query).then((res) => {
+      let data = res.data.datas.map((item) => {
+        return {
+          ...item,
+          key: item["id"],
+          course_date: Helper.formatDate(item["course_date"])
+        };
+      });
+      setStudentData(data);
+    });
+  };
+
   return (
     <React.Fragment>
       <div>
@@ -88,10 +155,7 @@ function Selections() {
         toggleModal={toggleModal}
       />
       <div style={{ width: "30%" }}>
-        <SearchBar
-          onSearch={onSearch}
-          placeHolder="search by name"
-        />
+        <SearchBar onSearch={onSearch} placeHolder="search by name" />
       </div>
       <br />
       <Tabs defaultActiveKey="listMode" onChange={onTabChange}>
@@ -131,7 +195,35 @@ function Selections() {
           </Table>
         </TabPane>
         <TabPane tab="Calender Mode" key="calenderMode">
-          <Calendar dateCellRender={dateCellRender} mode="month" onSelect={()=>{alert(123)}} />
+          <Modal
+            visible={visible}
+            title="Selection Detail"
+            onCancel={closemModal}
+            footer={[
+              <Button key="ok" type="primary" onClick={closemModal}>
+                OK
+              </Button>,
+            ]}
+          >
+            <Table dataSource={studentCourseData}>
+              <Column
+                title="Name"
+                dataIndex="student_name"
+                key="student_name"
+              />
+              <Column
+                title="Course"
+                dataIndex="course_name"
+                key="course_name"
+              />
+            </Table>
+          </Modal>
+          <Select style={{ width: "20%" }} defaultValue="Please select from the list" onChange={onCourseChange}> {courseList} </Select>
+          <Calendar
+            dateCellRender={dateCellRender}
+            mode="month"
+            onSelect={onCellSelect}
+          />
         </TabPane>
       </Tabs>
     </React.Fragment>
