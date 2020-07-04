@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
-import { Table, Button, Space, Tabs, Calendar, Modal, Select } from "antd";
+import { Table, Button, Space, Tabs, Calendar, Modal, Select, Row, Col } from "antd";
 import Helper from "../../lib/helper";
 import SearchBar from "../searchbar";
 import Link from 'next/link'
@@ -77,7 +77,15 @@ function Selections() {
   }
 
   const [studentCourseData, setStudentCourseData] = useState([]);
+
+  // Global bool to prevent modal from opening when year/month changes
+  let modalShouldOpen = true;
   const onCellSelect = (value) => {
+    if (!modalShouldOpen) {
+      modalShouldOpen = true;
+      return;
+    }
+
     setVisible(true);
     const date = value.format("YYYY-MM-DD");
     let query = `?date=${date}`;
@@ -220,8 +228,78 @@ function Selections() {
           </Modal>
           <Select style={{ width: "20%" }} defaultValue="Please select from the list" onChange={onCourseChange}> {courseList} </Select>
           <Calendar
+            headerRender={({ value, onChange }) => {
+              const start = 0;
+              const end = 12;
+              const monthOptions = [];
+      
+              const current = value.clone();
+              const localeData = value.localeData();
+              const months = [];
+              for (let i = 0; i < 12; i++) {
+                current.month(i);
+                months.push(localeData.monthsShort(current));
+              }
+      
+              for (let index = start; index < end; index++) {
+                monthOptions.push(
+                  <Select.Option key={`${index}`}>
+                    {months[index]}
+                  </Select.Option>,
+                );
+              }
+              const month = value.month();
+      
+              const year = value.year();
+              const options = [];
+              for (let i = year - 10; i < year + 10; i += 1) {
+                options.push(
+                  <Select.Option key={i} value={i}>
+                    {i}
+                  </Select.Option>,
+                );
+              }
+              return (
+                <div style={{ padding: 8 }}>
+                  <Row justify="end" gutter={8}>
+                    <Col>
+                      <Select
+                        size="small"
+                        dropdownMatchSelectWidth={false}
+                        onChange={(newYear) => {
+                          // Global bool to prevent modal from opening when year changes
+                          modalShouldOpen = false;
+
+                          const now = value.clone().year(newYear);
+                          onChange(now);
+                        }}
+                        value={String(year)}
+                      >
+                        {options}
+                      </Select>
+                    </Col>
+                    <Col>
+                      <Select
+                        size="small"
+                        dropdownMatchSelectWidth={false}
+                        value={String(month)}
+                        onChange={async (selectedMonth) => {
+                          // Global bool to prevent modal from opening when year changes
+                          modalShouldOpen = false;
+
+                          const newValue = value.clone();
+                          newValue.month(parseInt(selectedMonth, 10));
+                          onChange(newValue);
+                        }}
+                      >
+                        {monthOptions}
+                      </Select>
+                    </Col>
+                  </Row>
+                </div>
+              );
+            }}
             dateCellRender={dateCellRender}
-            mode="month"
             onSelect={onCellSelect}
           />
         </TabPane>
