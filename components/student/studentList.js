@@ -27,21 +27,33 @@ function StudentList() {
   };
 
   const [updateCounter, setupdateCounter] = useState(0);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    API.getStudentList().then((res) => {
-      let data = res.data.datas.map((item) => {
-        return {
-          ...item,
-          key: item["id"],
-          joinTime: timeago.format(new Date(item["ctime"])),
-          selectedCurriculum: getSelectedCurriculum(item["courses"]),
-          studentType: item["type_name"]
-        };
+    async function fetchData() {
+      setLoading(true);
+      let res = API.getStudentList();
+      let success = await API.CheckAPIResult(res);
+      if (!success) {
+        return;
+      }
+
+      res.then((res) => {
+        let data = res.data.datas.map((item) => {
+          return {
+            ...item,
+            key: item["id"],
+            joinTime: timeago.format(new Date(item["ctime"])),
+            selectedCurriculum: getSelectedCurriculum(item["courses"]),
+            studentType: item["type_name"],
+          };
+        });
+        originalData = data;
+        setStudentData(data);
+        setLoading(false);
       });
-      originalData = data;
-      setStudentData(data);
-    });
+    }
+
+    fetchData();
   }, [updateCounter]);
 
   const onChange = (pagination, filters, sorter, extra) => {
@@ -63,7 +75,7 @@ function StudentList() {
         />
       </div>
       <br />
-      <Table dataSource={studentData} onChange={onChange}>
+      <Table dataSource={studentData} onChange={onChange} loading={loading}>
         <Column title="ID" dataIndex="id" key="id" />
         <Column
           title="Name"

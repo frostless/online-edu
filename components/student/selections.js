@@ -24,18 +24,32 @@ function Selections() {
   const handleStudentCourseAdded = () => {
     setUpdateCounter(updateCounter + 1);
   };
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    API.getStudentCourseList().then((res) => {
-      let data = res.data.datas.map((item) => {
-        return {
-          ...item,
-          key: item["id"],
-          course_date: Helper.formatDate(item["course_date"]),
-        };
+    async function fetchData() {
+      setLoading(true);
+      let res = API.getStudentCourseList();
+      let success = await API.CheckAPIResult(res);
+      if (!success) {
+        return;
+      }
+
+      res.then((res) => {
+        let data = res.data.datas.map((item) => {
+          return {
+            ...item,
+            key: item["id"],
+            course_date: Helper.formatDate(item["course_date"]),
+          };
+        });
+        originalData = data;
+        setStudentData(data);
+        setLoading(false);
       });
-      originalData = data;
-      setStudentData(data);
-    });
+    }
+
+    fetchData();
   }, [updateCounter]);
 
   const onSearch = (value) => {
@@ -168,7 +182,7 @@ function Selections() {
       <br />
       <Tabs defaultActiveKey="listMode" onChange={onTabChange}>
         <TabPane tab="List Mode" key="listMode">
-          <Table dataSource={studentData} onChange={onChange}>
+          <Table dataSource={studentData} onChange={onChange} loading={loading}>
             <Column title="ID" dataIndex="id" key="id" />
             <Column
               title="Name"
