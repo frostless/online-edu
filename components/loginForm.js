@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Input, Button, Typography, Checkbox } from "antd";
+import { Form, Input, Button, Typography, Checkbox, Radio } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import styled from 'styled-components';
 
@@ -32,6 +32,21 @@ function LoginForm(props) {
       onFinish={onFinish}
     >
       <StyledTitle>Curriculum Assistant</StyledTitle>
+      <Form.Item
+        name="loginType"
+        initialValue="student"
+        rules={[
+          {
+            required: true,
+            message: "Please choose a login type!",
+          },
+        ]}
+      >
+        <Radio.Group>
+          <Radio.Button value="student">Student</Radio.Button>
+          <Radio.Button value="teacher">Teacher</Radio.Button>
+        </Radio.Group>
+      </Form.Item>
       <Form.Item
         name="email"
         rules={[

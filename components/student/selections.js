@@ -27,15 +27,13 @@ function Selections() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       setLoading(true);
-      let res = API.getStudentCourseList();
-      let success = await API.CheckAPIResult(res);
-      if (!success) {
-        return;
-      }
-
-      res.then((res) => {
+      API.getStudentCourseList().then((res) => {
+        let success = API.CheckAPIResult(res);
+        if (!success) {
+          return;
+        }
         let data = res.data.datas.map((item) => {
           return {
             ...item,
@@ -47,8 +45,7 @@ function Selections() {
         setStudentData(data);
         setLoading(false);
       });
-    }
-
+    };
     fetchData();
   }, [updateCounter]);
 

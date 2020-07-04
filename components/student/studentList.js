@@ -29,15 +29,13 @@ function StudentList() {
   const [updateCounter, setupdateCounter] = useState(0);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       setLoading(true);
-      let res = API.getStudentList();
-      let success = await API.CheckAPIResult(res);
-      if (!success) {
-        return;
-      }
-
-      res.then((res) => {
+      API.getStudentList().then((res) => {
+        let success = API.CheckAPIResult(res);
+        if (!success) {
+          return;
+        }
         let data = res.data.datas.map((item) => {
           return {
             ...item,
@@ -52,8 +50,7 @@ function StudentList() {
         setLoading(false);
       });
     }
-
-    fetchData();
+   fetchData();
   }, [updateCounter]);
 
   const onChange = (pagination, filters, sorter, extra) => {

@@ -22,15 +22,13 @@ function CourseList() {
   const [updateCounter, setupdateCounter] = useState(0);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       setLoading(true);
-      let res = API.getCourseList();
-      let success = await API.CheckAPIResult(res);
-      if (!success) {
-        return;
-      }
-
-      res.then((res) => {
+      API.getCourseList().then((res) => {
+        let success = API.CheckAPIResult(res);
+        if (!success) {
+          return;
+        }
         let data = res.data.datas.map((item) => {
           return {
             ...item,
