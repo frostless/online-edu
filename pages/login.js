@@ -3,7 +3,7 @@ import { Row, Col, Alert } from "antd";
 import Router from 'next/router'
 import API from '../lib/api'
 import LoginForm from '../components/loginform'
-import Credential from '../lib/credential'
+import User from '../lib/user'
 
 const loginPage = () => {
   const [loginFail, SetLoginStatus] = useState(false);
@@ -20,8 +20,8 @@ const loginPage = () => {
         let success = API.CheckAPIResult(res);
         if (success) {
           const { token, login_type } = res.data["datas"];
-          Credential.saveToken(token);
-          Credential.saveLoginType(login_type);
+          User.saveToken(token);
+          User.saveLoginType(login_type);
           Router.push("/index");
         } else {
           showloginError(res["msg"]);
@@ -38,8 +38,8 @@ const loginPage = () => {
         let success = API.CheckAPIResult(res);
         if (success) {
           const { token, login_type } = res.data["datas"];
-          Credential.saveToken(token);
-          Credential.saveLoginType(login_type);
+          User.saveToken(token);
+          User.saveLoginType(login_type);
           Router.push("/index");
         } else {
           showloginError(res["msg"]);
