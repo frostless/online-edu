@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import Link from "next/link";
+import { AppSubmenu, AppMenuItem } from "./appmenuitem";
 import {
   UserAddOutlined,
   SettingOutlined,
@@ -36,44 +37,44 @@ function AppMenu() {
       openKeys={openKeys}
       onOpenChange={onOpenChange}
     >
-      <SubMenu key="student" icon={<TeamOutlined />} title="Students">
-        <Menu.Item key="/student" icon={<TeamOutlined />}>
+      <AppSubmenu key="student" icon={<TeamOutlined />} title="Students" visibleForStudent="true">
+        <AppMenuItem key="/student" icon={<TeamOutlined />}>
           <Link href="/student">
             <a>Student List</a>
           </Link>
-        </Menu.Item>
-        <Menu.Item key="/student/editstudent" icon={<UserAddOutlined />}>
+        </AppMenuItem>
+        <AppMenuItem key="/student/editstudent" icon={<UserAddOutlined />}>
           <Link href="/student/editstudent">
             <a>Add Student</a>
           </Link>
-        </Menu.Item>
-        <Menu.Item key="/student/selections" icon={<SelectOutlined />}>
+        </AppMenuItem>
+        <AppMenuItem key="/student/selections" icon={<SelectOutlined />} visibleForStudent="true">
           <Link href="/student/selections">
             <a>Selections</a>
           </Link>
-        </Menu.Item>
-      </SubMenu>
-      <SubMenu key="course" icon={<BookOutlined />} title="Course">
-        <Menu.Item key="/course">
+        </AppMenuItem>
+      </AppSubmenu>
+      <AppSubmenu key="course" icon={<BookOutlined />} title="Course">
+        <AppMenuItem key="/course">
           <Link href="/course">
             <a>Course List</a>
           </Link>
-        </Menu.Item>
-        <Menu.Item key="/course/editcourse">
+        </AppMenuItem>
+        <AppMenuItem key="/course/editcourse">
           <Link href="/course/editcourse">
             <a>Add Course</a>
           </Link>
-        </Menu.Item>
-        <Menu.Item key="/course/coursetype">Course Type</Menu.Item>
-      </SubMenu>
-      <SubMenu key="sub3" icon={<UserOutlined />} title="Teacher">
-        <Menu.Item key="6">To Do </Menu.Item>
-        <Menu.Item key="7">To Do</Menu.Item>
-      </SubMenu>
-      <SubMenu key="sub4" icon={<SettingOutlined />} title="Setting">
-        <Menu.Item key="8">To Do </Menu.Item>
-        <Menu.Item key="9">To Do</Menu.Item>
-      </SubMenu>
+        </AppMenuItem>
+        <AppMenuItem key="/course/coursetype">Course Type</AppMenuItem>
+      </AppSubmenu>
+      <AppSubmenu key="sub3" icon={<UserOutlined />} title="Teacher">
+        <AppMenuItem key="6">To Do</AppMenuItem>
+        <AppMenuItem key="7">To Do</AppMenuItem>
+      </AppSubmenu>
+      <AppSubmenu key="sub4" icon={<SettingOutlined />} title="Setting">
+        <AppMenuItem key="8">To Do</AppMenuItem>
+        <AppMenuItem key="9">To Do</AppMenuItem>
+      </AppSubmenu>
     </Menu>
   );
 }
