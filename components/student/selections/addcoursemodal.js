@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import API from "../../lib/api";
-import Notification from "../../lib/notification";
+import API from "../../../lib/api";
+import Notification from "../../../lib/notification";
 import { Modal, Button, Select, Form, DatePicker } from "antd";
 
 function AddCoueseModal(props) {
@@ -13,49 +13,68 @@ function AddCoueseModal(props) {
 
   const [studentList, setStudentList] = useState([]);
   useEffect(() => {
-    setLoading(true);
-
-    API.getStudentList().then((res) => {
-      let studentList = [];
-      res.data.datas.forEach((element) => {
-        const { id, name } = element;
-        const option = (
-          <Option key={id} value={id}>
-            {name}
-          </Option>
-        );
-        studentList.push(option);
+    if (!visible) {
+      return;
+    }
+    const fetchData = async () => {
+      setLoading(true);
+      API.getStudentList().then((res) => {
+        let success = API.CheckAPIResult(res);
+        if (!success) {
+          return;
+        }
+        let studentList = [];
+        res.data.datas.forEach((element) => {
+          const { id, name } = element;
+          const option = (
+            <Option key={id} value={id}>
+              {name}
+            </Option>
+          );
+          studentList.push(option);
+        });
+        setStudentList(studentList);
       });
-      setStudentList(studentList);
-    });
-  }, []);
+    };
+    fetchData();
+  }, [visible]);
 
   const [courseList, setCourseList] = useState([]);
   useEffect(() => {
-    API.getCourseList().then((res) => {
-      let courseList = [];
-      res.data.datas.forEach((element) => {
-        const { id, name } = element;
-        const option = (
-          <Option key={id} value={id}>
-            {name}
-          </Option>
-        );
-        courseList.push(option);
+    if (!visible) {
+      return;
+    }
+    const fetchData = async () => {
+      API.getCourseList().then((res) => {
+        let success = API.CheckAPIResult(res);
+        if (!success) {
+          return;
+        }
+        let courseList = [];
+        res.data.datas.forEach((element) => {
+          const { id, name } = element;
+          const option = (
+            <Option key={id} value={id}>
+              {name}
+            </Option>
+          );
+          courseList.push(option);
+        });
+        setCourseList(courseList);
+        setLoading(false);
       });
-      setCourseList(courseList);
-    });
-
-    setLoading(false);
-  }, []);
+    };
+    fetchData();
+  }, [visible]);
 
   const onFinish = async (input) => {
     setLoading(true);
 
     const studentCourse = makeStudentCourse(input);
 
-    let error = await addStudentCourse(studentCourse);
-    if (error) {
+    const res = await API.addStudetCourse(studentCourse);
+    let success = API.CheckAPIResult(res);
+    if (!success) {
       Notification.notify("Course Added Failed", error);
       return;
     }
@@ -76,14 +95,6 @@ function AddCoueseModal(props) {
     input["course_date"] = courseDate;
 
     return input;
-  };
-
-  const addStudentCourse = async (studentCourse) => {
-    try {
-       await API.addStudetCourse(studentCourse);
-    } catch (e) {
-      return e;
-    }
   };
 
   return (
