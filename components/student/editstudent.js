@@ -18,20 +18,30 @@ function EditStudent(props) {
   const [form] = Form.useForm();
 
   const [studentTypeList, setStudentTypeList] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    API.getStudentTypeList().then((res) => {
-      let studentTypeList = [];
-      res.data.datas.forEach((element) => {
-        const { id, name } = element;
-        const option = (
-          <Option key={id} value={id}>
-            {name}
-          </Option>
-        );
-        studentTypeList.push(option);
+    const fetchData = async () => {
+      setLoading(true);
+      API.getStudentTypeList().then((res) => {
+        let success = API.CheckAPIResult(res);
+        if (!success) {
+          return;
+        }
+        let studentTypeList = [];
+        res.data.datas.forEach((element) => {
+          const { id, name } = element;
+          const option = (
+            <Option key={id} value={id}>
+              {name}
+            </Option>
+          );
+          studentTypeList.push(option);
+        });
+        setStudentTypeList(studentTypeList);
+        setLoading(false);
       });
-      setStudentTypeList(studentTypeList);
-    });
+    }
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -49,22 +59,6 @@ function EditStudent(props) {
     })
   }, []);
 
-  const addNewStudent = async (student) => {
-    try {
-      await API.addStudent(student);
-    } catch (e) {
-      return e;
-    }
-  };
-
-  const updateStudent = async (student) => {
-    try {
-      await API.updateStudent(student);
-    } catch (e) {
-      return e;
-    }
-  };
-
   const makeStudent = (input) => {
     let student = {
       name: input["studentName"],
@@ -76,17 +70,6 @@ function EditStudent(props) {
       student["id"] = studentID;
 
     return student;
-  };
-
-  const processStudent = async (input) => {
-    let response;
-    let student = makeStudent(input);
-    if (isNewStudent) {
-      response = await addNewStudent(student);
-    } else {
-      response = await updateStudent(student);
-    }
-    return response;
   };
 
   const getSuccessTitle = () => {
@@ -107,8 +90,16 @@ function EditStudent(props) {
 
   const onFinish = async (input) => {
     const { studentName } = input;
-    let error = await processStudent(input);
-    if (error) {
+    let student = makeStudent(input);
+    let res;
+    if (isNewStudent) {
+      res = await addNewStudent(student);
+    } else {
+      res = await updateStudent(student);
+    }
+
+    let success = API.CheckAPIResult(res);
+    if (!success) {
       Notification.notify(getFailueTitle(), error);
       return;
     }
@@ -167,7 +158,7 @@ function EditStudent(props) {
           <Input type="text" placeholder="Address" />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={loading}>
             Save Student
           </Button>
         </Form.Item>

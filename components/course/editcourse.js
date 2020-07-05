@@ -18,20 +18,30 @@ function EditCourse(props) {
   const [form] = Form.useForm();
 
   const [courseTypeList, setCourseTypeList] = useState([]);
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
-    API.getCourseTypeList().then((res) => {
-      let courseTypeList = [];
-      res.data.datas.forEach((element) => {
-        const { id, name } = element;
-        const option = (
-          <Option key={id} value={id}>
-            {name}
-          </Option>
-        );
-        courseTypeList.push(option);
+    const fetchData = async () => {
+      setLoading(true);
+      API.getCourseTypeList().then((res) => {
+        let success = API.CheckAPIResult(res);
+        if (!success) {
+          return;
+        }
+        let courseTypeList = [];
+        res.data.datas.forEach((element) => {
+          const { id, name } = element;
+          const option = (
+            <Option key={id} value={id}>
+              {name}
+            </Option>
+          );
+          courseTypeList.push(option);
+        });
+        setCourseTypeList(courseTypeList);
+        setLoading(false);
       });
-      setCourseTypeList(courseTypeList);
-    });
+    };
+    fetchData();
   }, []);
   
   useEffect(() => {
@@ -44,15 +54,6 @@ function EditCourse(props) {
       form.setFieldsValue({ courseName: name, courseType: type_id });
     })
   }, []);
-
-
-  const addNewCourse = async (course) => {
-    try {
-      await API.addCourse(course);
-    } catch (e) {
-      return e;
-    }
-  };
 
   const updateCourse = async (course) => {
     try {
@@ -102,8 +103,9 @@ function EditCourse(props) {
 
   const onFinish = async (input) => {
     const { courseName } = input;
-    let error = await processCourse(input);
-    if (error) {
+    let res =  await API.addCourse(course);
+    let success = API.CheckAPIResult(res);
+    if (!success) {
       Notification.notify(getFailueTitle(), error);
       return;
     }
@@ -142,7 +144,7 @@ function EditCourse(props) {
           <Select style={{ width: "100%" }}>{courseTypeList}</Select>
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={loading}>
             Save Course
           </Button>
         </Form.Item>
