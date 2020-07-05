@@ -1,7 +1,10 @@
-import React from "react";
-import { Form, Input, Button, Typography, Checkbox, Radio } from "antd";
+import React, {useState} from "react";
+import { Form, Input, Button, Typography, Checkbox, Radio, Alert } from "antd";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import styled from 'styled-components';
+import Router from 'next/router'
+import API from '../lib/api'
+import User from '../lib/user'
 
 // Properties
 const { Title } = Typography;
@@ -22,14 +25,53 @@ const StyledTitle = styled(Title)`
 // End Style Components
 
 function LoginForm(props) {
-  const onFinish = props.onFinish;
+  const [form] = Form.useForm();
+  const [loginFailMsg, SetloginFailMsg] = useState();
+
+  const login = async (loginRequest, loginType) => {
+    let res;
+    if(loginType === "student"){
+      res = await API.studentLogin(loginRequest);
+    } else {
+      res = await API.teacherLogin(loginRequest);
+    }
+
+    let success = API.CheckAPIResult(res);
+    if (success) {
+      const { token, login_type } = res.data["datas"];
+      User.saveToken(token);
+      User.saveLoginType(login_type);
+      Router.push("/index");
+    } else {
+      showloginError(res["msg"]);
+    }
+  }
+
+  const showloginError = (msg) => {
+    SetloginFailMsg(msg);
+  };
+
+  const onFinish = (loginRequest) => {
+    const { loginType } = loginRequest;
+    login(loginRequest, loginType);
+  };
+
+  const onLoginTypeChange = e => {
+    const selectedLoginType = e.target.value;
+    form.resetFields();
+    form.setFieldsValue({ loginType: selectedLoginType });
+    SetloginFailMsg();
+  }
+
   return (
+    <React.Fragment>
     <Form
       name="login"
       initialValues={{
         remember: true,
       }}
       onFinish={onFinish}
+      form={form}
     >
       <StyledTitle>Curriculum Assistant</StyledTitle>
       <Form.Item
@@ -42,7 +84,7 @@ function LoginForm(props) {
           },
         ]}
       >
-        <Radio.Group>
+        <Radio.Group onChange={onLoginTypeChange}>
           <Radio.Button value="student">Student</Radio.Button>
           <Radio.Button value="teacher">Teacher</Radio.Button>
         </Radio.Group>
@@ -86,6 +128,14 @@ function LoginForm(props) {
         </StyledButton>
       </Form.Item>
     </Form>
+    {loginFailMsg && (
+      <Alert
+        message="Login Failed"
+        description={loginFailMsg}
+        type="error"
+      />
+    )}
+    </React.Fragment>
   );
 }
 
