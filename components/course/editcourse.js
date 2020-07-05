@@ -25,6 +25,7 @@ function EditCourse(props) {
       API.getCourseTypeList().then((res) => {
         let success = API.CheckAPIResult(res);
         if (!success) {
+          setLoading(false);
           return;
         }
         let courseTypeList = [];
@@ -88,6 +89,7 @@ function EditCourse(props) {
   };
 
   const onFinish = async (input) => {
+    setLoading(true);
     const { courseName } = input;
     let course = makCourse(input);
     let res;
@@ -100,6 +102,7 @@ function EditCourse(props) {
     let success = API.CheckAPIResult(res);
     if (!success) {
       Notification.notify(getFailueTitle(), `Error Code: ${res['code']}, Error Message: ${res['msg']}`);
+      setLoading(false);
       return;
     }
 

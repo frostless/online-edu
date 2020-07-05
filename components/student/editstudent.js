@@ -25,6 +25,7 @@ function EditStudent(props) {
       API.getStudentTypeList().then((res) => {
         let success = API.CheckAPIResult(res);
         if (!success) {
+          setLoading(false);
           return;
         }
         let studentTypeList = [];
@@ -95,6 +96,7 @@ function EditStudent(props) {
   };
 
   const onFinish = async (input) => {
+    setLoading(true);
     const { studentName } = input;
     let student = makeStudent(input);
     let res;
@@ -107,6 +109,7 @@ function EditStudent(props) {
     let success = API.CheckAPIResult(res);
     if (!success) {
       Notification.notify(getFailueTitle(), `Error Code: ${res['code']}, Error Message: ${res['msg']}`);
+      setLoading(false);
       return;
     }
 

@@ -21,6 +21,7 @@ function AddCoueseModal(props) {
       API.getStudentList().then((res) => {
         let success = API.CheckAPIResult(res);
         if (!success) {
+          setLoading(false);
           return;
         }
         let studentList = [];
@@ -48,6 +49,7 @@ function AddCoueseModal(props) {
       API.getCourseList().then((res) => {
         let success = API.CheckAPIResult(res);
         if (!success) {
+          setLoading(false);
           return;
         }
         let courseList = [];
@@ -76,6 +78,7 @@ function AddCoueseModal(props) {
     let success = API.CheckAPIResult(res);
     if (!success) {
       Notification.notify("Course Added Failed", `Error Code: ${res['code']}, Error Message: ${res['msg']}`);
+      setLoading(false);
       return;
     }
 

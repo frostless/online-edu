@@ -13,6 +13,7 @@ function CourseSelect(props) {
       API.getCourseList().then((res) => {
         let success = API.CheckAPIResult(res);
         if (!success) {
+          setLoading(false);
           return;
         }
         let courseList = [];

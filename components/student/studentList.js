@@ -34,6 +34,7 @@ function StudentList() {
       API.getStudentList().then((res) => {
         let success = API.CheckAPIResult(res);
         if (!success) {
+          setLoading(false);
           return;
         }
         let data = res.data.datas.map((item) => {
