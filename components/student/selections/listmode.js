@@ -45,7 +45,7 @@ function ListMode() {
     const newList = originalData.filter((item) => {
       return item["student_name"].includes(value);
     });
-    setStudentData(newList);
+    setStudentCourseData(newList);
   };
 
   const [modalVisible, setModalVisible] = useState(false);

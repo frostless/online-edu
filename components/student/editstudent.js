@@ -38,25 +38,30 @@ function EditStudent(props) {
           studentTypeList.push(option);
         });
         setStudentTypeList(studentTypeList);
-        setLoading(false);
+        if (isNewStudent){
+          setLoading(false);
+        }
       });
     }
     fetchData();
   }, []);
 
   useEffect(() => {
-    if(isNewStudent)
-      return;
+    if (isNewStudent) return;
 
-    API.getStudent(studentID).then(res => {
-      const student = res.data.datas[0];
-      const { name, address, type_id } = student;
-      form.setFieldsValue({
-        studentName: name,
-        address: address,
-        studentType: type_id
+    const fetchData = async () => {
+      API.getStudent(studentID).then((res) => {
+        const student = res.data.datas[0];
+        const { name, address, type_id } = student;
+        form.setFieldsValue({
+          studentName: name,
+          address: address,
+          studentType: type_id,
+        });
+        setLoading(false);
       });
-    })
+    };
+    fetchData();
   }, []);
 
   const makeStudent = (input) => {
@@ -64,6 +69,7 @@ function EditStudent(props) {
       name: input["studentName"],
       type_id: input["studentType"],
       address: input["address"],
+      email: input["email"]
     };
 
     if (!isNewStudent) 
@@ -93,14 +99,14 @@ function EditStudent(props) {
     let student = makeStudent(input);
     let res;
     if (isNewStudent) {
-      res = await addNewStudent(student);
+      res = await API.addStudent(student);
     } else {
-      res = await updateStudent(student);
+      res = await API.updateStudent(student);
     }
 
     let success = API.CheckAPIResult(res);
     if (!success) {
-      Notification.notify(getFailueTitle(), error);
+      Notification.notify(getFailueTitle(), `Error Code: ${res['code']}, Error Message: ${res['msg']}`);
       return;
     }
 
@@ -133,6 +139,20 @@ function EditStudent(props) {
         >
           <Input type="password" placeholder="Password" />
         </Form.Item>
+        <Form.Item
+        name="email"
+        rules={[
+          {
+            required: true,
+            message: "Please input your Email!",
+          },
+        ]}
+      >
+        <Input
+          type="email"
+          placeholder="Email"
+        />
+      </Form.Item>
         <Form.Item
           name="studentType"
           initialValue="Please select from the list"

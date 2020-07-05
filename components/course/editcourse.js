@@ -38,30 +38,27 @@ function EditCourse(props) {
           courseTypeList.push(option);
         });
         setCourseTypeList(courseTypeList);
-        setLoading(false);
+        if (isNewCourse){
+          setLoading(false);
+        }
       });
     };
     fetchData();
   }, []);
   
   useEffect(() => {
-    if(isNewCourse)
-      return;
+    if (isNewCourse) return;
 
-    API.getCourse(courseID).then(res => {
-      const course = res.data.datas[0];
-      const {name, type_id} = course;
-      form.setFieldsValue({ courseName: name, courseType: type_id });
-    })
+    const fetchData = async () => {
+      API.getCourse(courseID).then((res) => {
+        const course = res.data.datas[0];
+        const { name, type_id } = course;
+        form.setFieldsValue({ courseName: name, courseType: type_id });
+        setLoading(false);
+      });
+    };
+    fetchData();
   }, []);
-
-  const updateCourse = async (course) => {
-    try {
-      await API.updateCourse(course);
-    } catch (e) {
-      return e;
-    }
-  };
 
   const makCourse = (input) => {
     let course = {
@@ -74,17 +71,6 @@ function EditCourse(props) {
       course["id"] = courseID;
 
     return course;
-  };
-
-  const processCourse = async (input) => {
-    let response;
-    let course = makCourse(input);
-    if (isNewCourse) {
-      response = await addNewCourse(course);
-    } else {
-      response = await updateCourse(course);
-    }
-    return response;
   };
 
   const getSuccessTitle = () => {
@@ -103,10 +89,17 @@ function EditCourse(props) {
 
   const onFinish = async (input) => {
     const { courseName } = input;
-    let res =  await API.addCourse(course);
+    let course = makCourse(input);
+    let res;
+    if (isNewCourse) {
+      res = await API.addCourse(course);
+    } else {
+      res = await API.updateCourse(course);
+    }
+
     let success = API.CheckAPIResult(res);
     if (!success) {
-      Notification.notify(getFailueTitle(), error);
+      Notification.notify(getFailueTitle(), `Error Code: ${res['code']}, Error Message: ${res['msg']}`);
       return;
     }
 
