@@ -75,7 +75,7 @@ function AddCoueseModal(props) {
     const res = await API.addStudetCourse(studentCourse);
     let success = API.CheckAPIResult(res);
     if (!success) {
-      Notification.notify("Course Added Failed", error);
+      Notification.notify("Course Added Failed", `Error Code: ${res['code']}, Error Message: ${res['msg']}`);
       return;
     }
 
