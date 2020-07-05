@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
 import Router from 'next/router'
-import User from '../lib/User'
+import Login from '../lib/login'
 
 function HomePage() {
 
   useEffect(() => {
     let isLogin = false;
-    if (User.getToken()) isLogin = true;
+    if (Login.getToken()) isLogin = true;
 
     if (!isLogin) {
       Router.push("/login");
