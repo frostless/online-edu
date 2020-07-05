@@ -5,14 +5,14 @@ const { SubMenu } = Menu;
 
 function AppSubmenu(props) {
   const [isTeacher, setIsTeacher] = useState(false);
-  const { visibleForStudent } = props;
+  const { visible } = props;
   useEffect(() => {
     const isTeacher = Login.getLoginType() === "teacher";
     setIsTeacher(isTeacher);
   }, []);
   return (
     <React.Fragment>
-        {(isTeacher || visibleForStudent) && (
+        {(isTeacher || visible) && (
             <SubMenu {...props} />
          )
         }
@@ -24,14 +24,14 @@ export { AppSubmenu };
 
 function AppMenuItem(props) {
     const [isTeacher, setIsTeacher] = useState(false);
-    const { visibleForStudent } = props;
+    const { visible } = props;
     useEffect(() => {
       const isTeacher = Login.getLoginType() === "teacher";
       setIsTeacher(isTeacher);
     }, []);
     return (
       <React.Fragment>
-          {(isTeacher || visibleForStudent) && (
+          {(isTeacher || visible) && (
               <Menu.Item {...props} />
            )
           }

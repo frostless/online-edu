@@ -37,7 +37,7 @@ function AppMenu() {
       openKeys={openKeys}
       onOpenChange={onOpenChange}
     >
-      <AppSubmenu key="student" icon={<TeamOutlined />} title="Students" visibleForStudent="true">
+      <AppSubmenu key="student" icon={<TeamOutlined />} title="Students" visible="true">
         <AppMenuItem key="/student" icon={<TeamOutlined />}>
           <Link href="/student">
             <a>Student List</a>
@@ -48,7 +48,7 @@ function AppMenu() {
             <a>Add Student</a>
           </Link>
         </AppMenuItem>
-        <AppMenuItem key="/student/selections" icon={<SelectOutlined />} visibleForStudent="true">
+        <AppMenuItem key="/student/selections" icon={<SelectOutlined />} visible="true">
           <Link href="/student/selections">
             <a>Selections</a>
           </Link>
