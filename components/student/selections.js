@@ -294,7 +294,7 @@ function Selections() {
                         size="small"
                         dropdownMatchSelectWidth={false}
                         value={String(month)}
-                        onChange={async (selectedMonth) => {
+                        onChange={(selectedMonth) => {
                           // Global bool to prevent modal from opening when year changes
                           modalShouldOpen = false;
 
