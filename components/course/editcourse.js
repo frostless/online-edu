@@ -110,6 +110,7 @@ function EditCourse(props) {
       getSuccessTitle(),
       getSuccessContent(courseName)
     );
+    setLoading(false);
   };
 
   return (

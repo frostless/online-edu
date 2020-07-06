@@ -115,6 +115,7 @@ function EditStudent(props) {
 
     Notification.notify(getSuccessTitle(), 
       getSuccessContent(studentName));
+      setLoading(false);
   };
 
   return (
