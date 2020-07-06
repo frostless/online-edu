@@ -4,39 +4,27 @@ import Login from "../../lib/login";
 const { SubMenu } = Menu;
 
 function AppSubmenu(props) {
-  const [isTeacher, setIsTeacher] = useState(false);
-  const { visible, ...rest } = props;
+  const [visible, setVisible] = useState(false);
+  const { owners, ...rest } = props;
   useEffect(() => {
-    const isTeacher = Login.getLoginType() === "teacher";
-    setIsTeacher(isTeacher);
+    const loginType = Login.getLoginType();
+    const visible = owners.includes(loginType);
+    setVisible(visible);
   }, []);
-  return (
-    <React.Fragment>
-        {(isTeacher || visible) && (
-            <SubMenu {...rest} />
-         )
-        }
-    </React.Fragment>
-  );
+  return <React.Fragment>{visible && <SubMenu {...rest} />}</React.Fragment>;
 }
 
 export { AppSubmenu };
 
 function AppMenuItem(props) {
-    const [isTeacher, setIsTeacher] = useState(false);
-    const { visible, ...rest } = props;
-    useEffect(() => {
-      const isTeacher = Login.getLoginType() === "teacher";
-      setIsTeacher(isTeacher);
-    }, []);
-    return (
-      <React.Fragment>
-          {(isTeacher || visible) && (
-              <Menu.Item {...rest} />
-           )
-          }
-      </React.Fragment>
-    );
-  }
-  
-  export { AppMenuItem };
+  const [visible, setVisible] = useState(false);
+  const { owners, ...rest } = props;
+  useEffect(() => {
+    const loginType = Login.getLoginType();
+    const visible = owners.includes(loginType);
+    setVisible(visible);
+  }, []);
+  return <React.Fragment>{visible && <Menu.Item {...rest} />}</React.Fragment>;
+}
+
+export { AppMenuItem };

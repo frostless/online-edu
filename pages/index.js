@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Router from "next/router";
 import Login from "../lib/login";
+import LoginType from "../components/types/logintypes"
 
 function HomePage() {
   useEffect(() => {
@@ -10,8 +11,8 @@ function HomePage() {
     if (!isLogin) {
       Router.push("/login");
     } else {
-      const isTeacher = Login.getLoginType() === "teacher";
-      if (isTeacher) {
+      const loginType = Login.getLoginType();
+      if (loginType === LoginType.teacher) {
         Router.push("/student");
       } else {
         Router.push("/student/selections");
