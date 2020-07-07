@@ -4,7 +4,7 @@ import timeago from '../../lib/timeago'
 import { Table, Space, Popconfirm, message } from 'antd';
 import Link from 'next/link'
 import SearchBar from "../searchbar";
-import Helper from "../../lib/Helper"
+import Helper from "../../lib/helper"
 
 const { Column } = Table;
 
