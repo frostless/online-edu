@@ -1,17 +1,17 @@
 import { useEffect } from "react";
 import Router from "next/router";
-import Login from "../lib/login";
+import User from "../lib/user";
 import LoginType from "../components/types/logintypes"
 
 function HomePage() {
   useEffect(() => {
     let isLogin = false;
-    if (Login.getToken()) isLogin = true;
+    if (User.getToken()) isLogin = true;
 
     if (!isLogin) {
       Router.push("/login");
     } else {
-      const loginType = Login.getLoginType();
+      const loginType = User.getLoginType();
       if (loginType === LoginType.teacher) {
         Router.push("/student");
       } else {

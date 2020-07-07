@@ -4,7 +4,7 @@ import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import styled from 'styled-components';
 import Router from 'next/router'
 import API from '../lib/api'
-import Login from '../lib/login'
+import User from '../lib/user'
 
 // Properties
 const { Title } = Typography;
@@ -39,8 +39,8 @@ function LoginForm(props) {
     let success = API.CheckAPIResult(res);
     if (success) {
       const { token, login_type } = res.data["datas"];
-      Login.saveToken(token);
-      Login.saveLoginType(login_type);
+      User.saveToken(token);
+      User.saveLoginType(login_type);
       Router.push("/index");
     } else {
       showloginError(res["msg"]);

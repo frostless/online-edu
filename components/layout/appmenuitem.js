@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-import Login from "../../lib/login";
+import User from "../../lib/user";
 const { SubMenu } = Menu;
 
 function AppSubmenu(props) {
   const [visible, setVisible] = useState(false);
   const { owners, ...rest } = props;
   useEffect(() => {
-    const loginType = Login.getLoginType();
+    const loginType = User.getLoginType();
     const visible = owners.includes(loginType);
     setVisible(visible);
   }, []);
@@ -20,7 +20,7 @@ function AppMenuItem(props) {
   const [visible, setVisible] = useState(false);
   const { owners, ...rest } = props;
   useEffect(() => {
-    const loginType = Login.getLoginType();
+    const loginType = User.getLoginType();
     const visible = owners.includes(loginType);
     setVisible(visible);
   }, []);
