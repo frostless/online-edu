@@ -17,29 +17,36 @@ function ListMode() {
     setUpdateCounter(updateCounter + 1);
   };
   const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+
+  const fetchData = async (pagination) => {
+    setLoading(true);
+    const query = Helper.makeQuery(pagination);
+    API.getStudentCourseList(query).then((res) => {
+      let success = API.CheckAPIResult(res);
+      if (!success) {
+        setLoading(false);
+        return;
+      }
+      let data = res.data.datas.map((item) => {
+        return {
+          ...item,
+          key: item["id"],
+          course_date: Helper.formatDate(item["course_date"]),
+        };
+      });
+      originalData = data;
+      setStudentCourseData(data);
+      setPagination({
+        ...pagination,
+        total: res.data["pager"]["rowcount"],
+      });
+      setLoading(false);
+    });
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      API.getStudentCourseList().then((res) => {
-        let success = API.CheckAPIResult(res);
-        if (!success) {
-          setLoading(false);
-          return;
-        }
-        let data = res.data.datas.map((item) => {
-          return {
-            ...item,
-            key: item["id"],
-            course_date: Helper.formatDate(item["course_date"]),
-          };
-        });
-        originalData = data;
-        setStudentCourseData(data);
-        setLoading(false);
-      });
-    };
-    fetchData();
+    fetchData(pagination);
   }, [updateCounter]);
 
   const onSearch = (value) => {
@@ -54,8 +61,8 @@ function ListMode() {
     setModalVisible(!modalVisible);
   };
 
-  const onChange = (pagination, filters, sorter, extra) => {
-    //   console.log("params", pagination, filters, sorter, extra);
+  const onTableChange = (pagination, filters, sorter, extra) => {
+    fetchData(pagination);
   };  
 
   return (
@@ -75,7 +82,7 @@ function ListMode() {
         <SearchBar onSearch={onSearch} placeHolder="search by name" />
       </div>
       <br />
-      <Table dataSource={studentCourseData} onChange={onChange} loading={loading}>
+      <Table dataSource={studentCourseData} onChange={onTableChange} loading={loading} pagination={pagination}>
         <Column title="ID" dataIndex="id" key="id" />
         <Column
           title="Name"

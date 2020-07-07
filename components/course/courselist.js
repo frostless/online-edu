@@ -4,6 +4,7 @@ import timeago from '../../lib/timeago'
 import { Table, Space, Popconfirm, message } from 'antd';
 import Link from 'next/link'
 import SearchBar from "../searchbar";
+import Helper from "../../lib/Helper"
 
 const { Column } = Table;
 
@@ -21,40 +22,47 @@ function CourseList() {
 
   const [updateCounter, setupdateCounter] = useState(0);
   const [loading, setLoading] = useState(false);
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      API.getCourseList().then((res) => {
-        let success = API.CheckAPIResult(res);
-        if (!success) {
-          setLoading(false);
-          return;
-        }
-        let data = res.data.datas.map((item) => {
-          return {
-            ...item,
-            key: item["id"],
-            type: item["type_name"],
-            createdAt: timeago.format(new Date(item["ctime"]))
-          };
-        });
-        originalData = data;
-        setCourseData(data);
-        setLoading(false);
-      });
-    }
-    fetchData();
-  }, [updateCounter]);
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
-  const onChange = (pagination, filters, sorter, extra) => {
-    //   console.log("params", pagination, filters, sorter, extra);
-  };
+  const fetchData = async (pagination) => {
+    setLoading(true);
+    const query = Helper.makeQuery(pagination);
+    API.getCourseList(query).then((res) => {
+      let success = API.CheckAPIResult(res);
+      if (!success) {
+        setLoading(false);
+        return;
+      }
+      let data = res.data.datas.map((item) => {
+        return {
+          ...item,
+          key: item["id"],
+          type: item["type_name"],
+          createdAt: timeago.format(new Date(item["ctime"]))
+        };
+      });
+      originalData = data;
+      setCourseData(data);
+      setPagination({
+        ...pagination,
+        total: res.data["pager"]["rowcount"],
+      });
+      setLoading(false);
+    });
+  }
+  useEffect(() => {
+    fetchData(pagination);
+  }, [updateCounter]);
 
   const onDelete = async (course) => {
     await API.deleteCourse({ id: course["id"] });
     message.success('Course Deleted');
     setupdateCounter(updateCounter + 1);
   };
+
+  const onTableChange = (pagination, filters, sorter, extra) => {
+    fetchData(pagination);
+  }
 
   return (
     <React.Fragment>
@@ -65,7 +73,7 @@ function CourseList() {
         />
       </div>
       <br />
-      <Table dataSource={courseData} onChange={onChange} loading={loading}>
+      <Table dataSource={courseData} onChange={onTableChange} loading={loading} pagination={pagination}>
         <Column title="ID" dataIndex="id" key="id" />
         <Column
           title="Name"
