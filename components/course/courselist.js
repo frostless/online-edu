@@ -55,7 +55,12 @@ function CourseList() {
   }, [updateCounter]);
 
   const onDelete = async (course) => {
-    await API.deleteCourse({ id: course["id"] });
+    const res = await API.deleteCourse({ id: course["id"] });
+    let success = API.CheckAPIResult(res);
+    if (!success) {
+      message.error(`Error occured: ${res['msg']}`);
+      return;
+    }
     message.success('Course Deleted');
     setupdateCounter(updateCounter + 1);
   };
@@ -92,7 +97,7 @@ function CourseList() {
                 <a>Edit</a>
               </Link>
               <Popconfirm
-                title="Are you sure delete this course?"
+                title="Are you sure to delete this course?"
                 onConfirm={()=>{onDelete(record)}}
                 okText="Yes"
                 cancelText="No"
