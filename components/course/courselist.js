@@ -26,8 +26,8 @@ function CourseList() {
 
   const fetchData = async (pagination) => {
     setLoading(true);
-    const query = Helper.makeQuery(pagination);
-    API.getCourseList(query).then((res) => {
+    const queryObject = Helper.paginationToUrlObject(pagination);
+    API.getCourseList(queryObject).then((res) => {
       let success = API.CheckAPIResult(res);
       if (!success) {
         setLoading(false);

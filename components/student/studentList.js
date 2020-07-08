@@ -33,8 +33,8 @@ function StudentList() {
 
   const fetchData = async (pagination) => {
     setLoading(true);
-    const query = Helper.makeQuery(pagination);
-    API.getStudentList(query).then((res) => {
+    const queryObject = Helper.paginationToUrlObject(pagination);
+    API.getStudentList(queryObject).then((res) => {
       let success = API.CheckAPIResult(res);
       if (!success) {
         setLoading(false);

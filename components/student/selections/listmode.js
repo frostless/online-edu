@@ -21,8 +21,8 @@ function ListMode() {
 
   const fetchData = async (pagination) => {
     setLoading(true);
-    const query = Helper.makeQuery(pagination);
-    API.getStudentCourseList(query).then((res) => {
+    const queryObject = Helper.paginationToUrlObject(pagination);
+    API.getStudentCourseList(queryObject).then((res) => {
       let success = API.CheckAPIResult(res);
       if (!success) {
         setLoading(false);
