@@ -22,7 +22,7 @@ function CourseList() {
 
   const [updateCounter, setupdateCounter] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10, showSizeChanger: true });
 
   const fetchData = async (pagination) => {
     setLoading(true);
@@ -42,11 +42,11 @@ function CourseList() {
         };
       });
       originalData = data;
-      setCourseData(data);
       setPagination({
         ...pagination,
         total: res.data["pager"]["rowcount"],
       });
+      setCourseData(data);
       setLoading(false);
     });
   }

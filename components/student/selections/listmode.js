@@ -17,7 +17,7 @@ function ListMode() {
     setUpdateCounter(updateCounter + 1);
   };
   const [loading, setLoading] = useState(false);
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [pagination, setPagination] = useState({ current: 1, pageSize: 10, showSizeChanger: true });
 
   const fetchData = async (pagination) => {
     setLoading(true);
@@ -36,11 +36,11 @@ function ListMode() {
         };
       });
       originalData = data;
-      setStudentCourseData(data);
       setPagination({
         ...pagination,
         total: res.data["pager"]["rowcount"],
       });
+      setStudentCourseData(data);
       setLoading(false);
     });
   };
