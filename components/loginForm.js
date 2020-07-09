@@ -8,6 +8,7 @@ import User from '../lib/user'
 
 // Properties
 const { Title } = Typography;
+const student = "student", teacher = "teacher", manager = "manager";
 // End Properties
 
 // Style Components
@@ -30,10 +31,12 @@ function LoginForm(props) {
 
   const login = async (loginRequest, loginType) => {
     let res;
-    if(loginType === "student"){
+    if(loginType === student){
       res = await API.studentLogin(loginRequest);
-    } else {
+    } else if (loginType === teacher){
       res = await API.teacherLogin(loginRequest);
+    } else {
+      res = await API.managerLogin(loginRequest);
     }
 
     let success = API.CheckAPIResult(res);
@@ -85,8 +88,9 @@ function LoginForm(props) {
         ]}
       >
         <Radio.Group onChange={onLoginTypeChange}>
-          <Radio.Button value="student">Student</Radio.Button>
-          <Radio.Button value="teacher">Teacher</Radio.Button>
+          <Radio.Button value={student}>Student</Radio.Button>
+          <Radio.Button value={teacher}>Teacher</Radio.Button>
+          <Radio.Button value={manager}>Manager</Radio.Button>
         </Radio.Group>
       </Form.Item>
       <Form.Item
