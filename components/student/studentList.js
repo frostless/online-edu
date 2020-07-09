@@ -8,16 +8,12 @@ import Helper from "../../lib/helper"
 
 const { Column } = Table;
 
-let originalData = [];
-
 function StudentList() {
   const [studentData, setStudentData] = useState([]);
 
+  const [search, setSearch] = useState();
   const onSearch = (value) => {
-    const newList = originalData.filter((item) => {
-      return item["name"].includes(value);
-    });
-    setStudentData(newList);
+    setSearch(value);
   };
 
   const getSelectedCurriculum = (curriculumArray) => {
@@ -31,10 +27,13 @@ function StudentList() {
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10, showSizeChanger: true });
 
-  const fetchData = async (pagination) => {
+  const fetchData = async () => {
     setLoading(true);
-    const queryObject = Helper.paginationToUrlObject(pagination);
-    API.getStudentList(queryObject).then((res) => {
+    let params = Helper.paginationToUrlObject(pagination);
+    if (search) {
+      params = { pagesize: pagination.pageSize, kw: search };
+    }
+    API.getStudentList(params).then((res) => {
       let success = API.CheckAPIResult(res);
       if (!success) {
         setLoading(false);
@@ -49,9 +48,9 @@ function StudentList() {
           studentType: item["type_name"],
         };
       });
-      originalData = data;
       setPagination({
         ...pagination,
+        current: Math.min(++res.data["pager"]["page"], pagination.current),
         total: res.data["pager"]["rowcount"],
       });
       setStudentData(data);
@@ -60,8 +59,8 @@ function StudentList() {
   };
 
   useEffect(() => {
-   fetchData(pagination);
-  }, [updateCounter]);
+    fetchData();
+  }, [updateCounter, search]);
 
   const onDelete = async (student) => {
     const res = await API.deleteStudent({ id: student["id"] });
@@ -75,7 +74,8 @@ function StudentList() {
   };
 
   const onTableChange = (pagination, filters, sorter, extra) => {
-    fetchData(pagination);
+    setPagination(pagination);
+    setupdateCounter(updateCounter + 1);
   };
 
   return (

@@ -8,8 +8,6 @@ import API from "../../../lib/api";
 
 const { Column } = Table;
 
-let originalData = [];
-
 function ListMode() {
   const [studentCourseData, setStudentCourseData] = useState([]);
   const [updateCounter, setUpdateCounter] = useState(0);
@@ -19,10 +17,18 @@ function ListMode() {
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10, showSizeChanger: true });
 
-  const fetchData = async (pagination) => {
+  const [search, setSearch] = useState();
+  const onSearch = (value) => {
+    setSearch(value);
+  };
+
+  const fetchData = async () => {
     setLoading(true);
-    const queryObject = Helper.paginationToUrlObject(pagination);
-    API.getStudentCourseList(queryObject).then((res) => {
+    let params = Helper.paginationToUrlObject(pagination);
+    if (search) {
+      params = { pagesize: pagination.pageSize, kw: search };
+    }
+    API.getStudentCourseList(params).then((res) => {
       let success = API.CheckAPIResult(res);
       if (!success) {
         setLoading(false);
@@ -35,9 +41,9 @@ function ListMode() {
           course_date: Helper.formatDate(item["course_date"]),
         };
       });
-      originalData = data;
       setPagination({
         ...pagination,
+        current: Math.min(++res.data["pager"]["page"], pagination.current),
         total: res.data["pager"]["rowcount"],
       });
       setStudentCourseData(data);
@@ -46,15 +52,8 @@ function ListMode() {
   };
 
   useEffect(() => {
-    fetchData(pagination);
-  }, [updateCounter]);
-
-  const onSearch = (value) => {
-    const newList = originalData.filter((item) => {
-      return item["student_name"].includes(value);
-    });
-    setStudentCourseData(newList);
-  };
+    fetchData();
+  }, [updateCounter, search]);
 
   const [modalVisible, setModalVisible] = useState(false);
   const toggleModal = () => {
@@ -62,7 +61,8 @@ function ListMode() {
   };
 
   const onTableChange = (pagination, filters, sorter, extra) => {
-    fetchData(pagination);
+    setPagination(pagination);
+    setupdateCounter(updateCounter + 1);
   };  
 
   return (

@@ -8,26 +8,25 @@ import Helper from "../../lib/helper"
 
 const { Column } = Table;
 
-let originalData = [];
-
 function CourseList() {
   const [courseData, setCourseData] = useState([]);
 
+  const [search, setSearch] = useState();
   const onSearch = (value) => {
-    const newList = originalData.filter((item) => {
-      return item["name"].includes(value);
-    });
-    setCourseData(newList);
+    setSearch(value);
   };
 
   const [updateCounter, setupdateCounter] = useState(0);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10, showSizeChanger: true });
 
-  const fetchData = async (pagination) => {
+  const fetchData = async () => {
     setLoading(true);
-    const queryObject = Helper.paginationToUrlObject(pagination);
-    API.getCourseList(queryObject).then((res) => {
+    let params = Helper.paginationToUrlObject(pagination);
+    if (search) {
+      params = { pagesize: pagination.pageSize, kw: search };
+    }
+    API.getCourseList(params).then((res) => {
       let success = API.CheckAPIResult(res);
       if (!success) {
         setLoading(false);
@@ -41,9 +40,9 @@ function CourseList() {
           createdAt: timeago.format(new Date(item["ctime"]))
         };
       });
-      originalData = data;
       setPagination({
         ...pagination,
+        current: Math.min(++res.data["pager"]["page"], pagination.current),
         total: res.data["pager"]["rowcount"],
       });
       setCourseData(data);
@@ -51,8 +50,8 @@ function CourseList() {
     });
   }
   useEffect(() => {
-    fetchData(pagination);
-  }, [updateCounter]);
+    fetchData();
+  }, [updateCounter, search]);
 
   const onDelete = async (course) => {
     const res = await API.deleteCourse({ id: course["id"] });
@@ -66,7 +65,8 @@ function CourseList() {
   };
 
   const onTableChange = (pagination, filters, sorter, extra) => {
-    fetchData(pagination);
+    setPagination(pagination);
+    setupdateCounter(updateCounter + 1);
   }
 
   return (
