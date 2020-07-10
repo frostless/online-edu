@@ -13,6 +13,7 @@ function StudentList() {
 
   const [search, setSearch] = useState();
   const onSearch = (value) => {
+    setPagination({...pagination, current: 1});
     setSearch(value);
   };
 
@@ -31,7 +32,7 @@ function StudentList() {
     setLoading(true);
     let params = Helper.paginationToUrlObject(pagination);
     if (search) {
-      params = { pagesize: pagination.pageSize, kw: search };
+      params['kw'] = search;
     }
     API.getStudentList(params).then((res) => {
       let success = API.CheckAPIResult(res);

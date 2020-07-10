@@ -13,6 +13,7 @@ function CourseList() {
 
   const [search, setSearch] = useState();
   const onSearch = (value) => {
+    setPagination({...pagination, current: 1});
     setSearch(value);
   };
 
@@ -24,7 +25,7 @@ function CourseList() {
     setLoading(true);
     let params = Helper.paginationToUrlObject(pagination);
     if (search) {
-      params = { pagesize: pagination.pageSize, kw: search };
+      params['kw'] = search;
     }
     API.getCourseList(params).then((res) => {
       let success = API.CheckAPIResult(res);
