@@ -14,8 +14,10 @@ function HomePage() {
       const loginType = User.getLoginType();
       if (loginType === LoginType.teacher) {
         Router.push("/student");
-      } else {
+      } else if (loginType === LoginType.student) {
         Router.push("/student/selections");
+      } else if (loginType === LoginType.manager) {
+        Router.push("/student");
       }
     }
   });
