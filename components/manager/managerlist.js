@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
-import timeago from '../../lib/timeago'
 import { Table, Space, Popconfirm, message } from 'antd';
 import Link from 'next/link'
 import SearchBar from "../searchbar";
@@ -8,8 +7,8 @@ import Helper from "../../lib/helper"
 
 const { Column } = Table;
 
-function CourseList() {
-  const [courseData, setCourseData] = useState([]);
+function  ManagerList() {
+  const [managerData, setManagerData] = useState([]);
 
   const [search, setSearch] = useState();
   const onSearch = (value) => {
@@ -17,7 +16,7 @@ function CourseList() {
     setSearch(value);
   };
 
-  const [updateCounter, setupdateCounter] = useState(0);
+  const [updateCounter, setUpdateCounter] = useState(0);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10, showSizeChanger: true });
 
@@ -27,7 +26,7 @@ function CourseList() {
     if (search) {
       params['kw'] = search;
     }
-    API.getCourseList(params).then((res) => {
+    API.getManagerList(params).then((res) => {
       let success = API.CheckAPIResult(res);
       if (!success) {
         setLoading(false);
@@ -37,15 +36,14 @@ function CourseList() {
         return {
           ...item,
           key: item["id"],
-          type: item["type_name"],
-          createdAt: timeago.format(new Date(item["ctime"]))
+          name: item["nickname"]
         };
       });
       setPagination({
         ...pagination,
         total: res.data["pager"]["rowcount"],
       });
-      setCourseData(data);
+      setManagerData(data);
       setLoading(false);
     });
   }
@@ -53,20 +51,20 @@ function CourseList() {
     fetchData();
   }, [updateCounter, search]);
 
-  const onDelete = async (course) => {
-    const res = await API.deleteCourse({ id: course["id"] });
+  const onDelete = async (manager) => {
+    const res = await API.deleteManager({ id: manager["id"] });
     let success = API.CheckAPIResult(res);
     if (!success) {
       message.error(`Error occured: ${res['msg']}`);
       return;
     }
-    message.success('Course Deleted');
-    setupdateCounter(updateCounter + 1);
+    message.success('Manager Deleted');
+    setUpdateCounter(updateCounter + 1);
   };
 
   const onTableChange = (pagination, filters, sorter, extra) => {
     setPagination(pagination);
-    setupdateCounter(updateCounter + 1);
+    setUpdateCounter(updateCounter + 1);
   }
 
   return (
@@ -78,7 +76,7 @@ function CourseList() {
         />
       </div>
       <br />
-      <Table dataSource={courseData} onChange={onTableChange} loading={loading} pagination={pagination}>
+      <Table dataSource={managerData} onChange={onTableChange} loading={loading} pagination={pagination}>
         <Column title="ID" dataIndex="id" key="id" />
         <Column
           title="Name"
@@ -86,18 +84,17 @@ function CourseList() {
           key="name"
           sorter={(a, b) => a["name"].localeCompare(b["name"])}
         />
-        <Column title="Type" dataIndex="type" key="type" />
-        <Column title="Created At" dataIndex="createdAt" key="createdAt" />
+        <Column title="Email" dataIndex="email" key="email" />
         <Column
           title="Action"
           dataIndex="action"
           render={(text, record) => (
             <Space size="middle">
-              <Link href={`/course/editcourse?id=${record["id"]}`}>
+              <Link href={`/manager/editmanager?id=${record["id"]}`}>
                 <a>Edit</a>
               </Link>
               <Popconfirm
-                title="Are you sure to delete this course?"
+                title="Are you sure to delete this manager?"
                 onConfirm={()=>{onDelete(record)}}
                 okText="Yes"
                 cancelText="No"
@@ -112,4 +109,4 @@ function CourseList() {
   );
 }
 
-export default CourseList;
+export default ManagerList;
