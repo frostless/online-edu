@@ -4,7 +4,7 @@ import User from "../lib/user";
 import LoginTypes from "../components/types/logintypes"
 
 function HomePage() {
-  const { student, teacher, manager } = logintypes;
+  const { student, teacher, manager } = LoginTypes;
   useEffect(() => {
     let isLogin = false;
     if (User.getToken()) isLogin = true;

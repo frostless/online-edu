@@ -18,7 +18,7 @@ function EditManagerModal(props) {
     }
     const fetchData = async () => {
       setLoading(true);
-      API.getManagerRoleList().then((res) => {
+      API.getRoleList().then((res) => {
         let success = API.CheckAPIResult(res);
         if (!success) {
           setLoading(false);
@@ -88,7 +88,7 @@ function EditManagerModal(props) {
 
     setLoading(false);
     toggleModal();
-    // Refresh parent student course list
+    // Refresh parent manager list
     handleManagerAdded();
     resetForm();
   };

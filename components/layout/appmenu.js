@@ -6,6 +6,7 @@ import { UserAddOutlined, SettingOutlined, TeamOutlined, BookOutlined, SelectOut
 import LayoutService from "./layoutservice";
 import { useRouter } from "next/router";
 import loginTypes from "../types/logintypes";
+import { AppMenuKeys } from "../layout/appmenuconfig";
 
 function AppMenu() {
   const [openKeys, SetOpenKeys] = useState([]);
@@ -31,78 +32,73 @@ function AppMenu() {
       openKeys={openKeys}
       onOpenChange={onOpenChange}
     >
-      <AppSubmenu
-        key="student"
-        icon={<TeamOutlined />}
-        title="Students"
-        owners={[student, teacher, manager]}
-      >
-        <AppMenuItem key="/student" icon={<TeamOutlined />} owners={[teacher, manager]}>
-          <Link href="/student">
+      <AppSubmenu key={AppMenuKeys.studentSubMenu} icon={<TeamOutlined />} title="Students" owners={[student, teacher, manager]} >
+        <AppMenuItem key={AppMenuKeys.studentList} icon={<TeamOutlined />} owners={[teacher, manager]} >
+          <Link href={AppMenuKeys.studentList}>
             <a>Student List</a>
           </Link>
         </AppMenuItem>
-        <AppMenuItem key="/student/editstudent" icon={<UserAddOutlined />} owners={[teacher, manager]}>
-          <Link href="/student/editstudent">
+        <AppMenuItem key={AppMenuKeys.editStudent} icon={<UserAddOutlined />} owners={[teacher, manager]} >
+          <Link href={AppMenuKeys.editStudent}>
             <a>Add Student</a>
           </Link>
         </AppMenuItem>
-        <AppMenuItem key="/student/selections" icon={<SelectOutlined />} owners={[teacher, student]}>
-          <Link href="/student/selections">
+        <AppMenuItem key={AppMenuKeys.studentSelection} icon={<SelectOutlined />} owners={[teacher, student]} >
+          <Link href={AppMenuKeys.studentSelection}>
             <a>Selections</a>
           </Link>
         </AppMenuItem>
       </AppSubmenu>
-      <AppSubmenu key="course" icon={<BookOutlined />} title="Course" owners={[teacher]}>
-        <AppMenuItem key="/course" owners={[teacher]}>
-          <Link href="/course">
+      <AppSubmenu key={AppMenuKeys.courseSubMenu} icon={<BookOutlined />} title="Course" owners={[teacher]} >
+        <AppMenuItem key={AppMenuKeys.courselist} owners={[teacher]}>
+          <Link href={AppMenuKeys.courselist}>
             <a>Course List</a>
           </Link>
         </AppMenuItem>
-        <AppMenuItem key="/course/editcourse" owners={[teacher]}>
-          <Link href="/course/editcourse">
+        <AppMenuItem key={AppMenuKeys.editCourse} owners={[teacher]}>
+          <Link href={AppMenuKeys.editCourse}>
             <a>Add Course</a>
           </Link>
         </AppMenuItem>
-        <AppMenuItem key="/course/coursetype" owners={[teacher]}>Course Type</AppMenuItem>
+        <AppMenuItem key={AppMenuKeys.courseType} owners={[teacher]}>
+          Course Type
+        </AppMenuItem>
       </AppSubmenu>
       <AppSubmenu
-        key="teacher"
+        key={AppMenuKeys.teacherSubMenu}
         title="Teacher"
         icon={<TeamOutlined />}
         owners={[manager]}
       >
-        <AppMenuItem key="/teacher" icon={<TeamOutlined />} owners={[manager]}>
-          <Link href="/teacher">
+        <AppMenuItem key={AppMenuKeys.teacherList} icon={<TeamOutlined />} owners={[manager]}>
+          <Link href={AppMenuKeys.teacherList}>
             <a>Teacher List</a>
           </Link>
         </AppMenuItem>
       </AppSubmenu>
       <AppSubmenu
-        key="manager"
+        key={AppMenuKeys.managerSubMenu}
         title="Manager"
         icon={<TeamOutlined />}
         owners={[manager]}
       >
-        <AppMenuItem key="/manager" icon={<TeamOutlined />} owners={[manager]}>
-          <Link href="/manager">
+        <AppMenuItem key={AppMenuKeys.managerList} icon={<TeamOutlined />} owners={[manager]}>
+          <Link href={AppMenuKeys.managerList}>
             <a>Manager List</a>
           </Link>
         </AppMenuItem>
       </AppSubmenu>
-      <AppSubmenu
-        key="role"
-        title="Role"
-        owners={[manager]}
-      >
-        <AppMenuItem key="/role" owners={[manager]}>
-          <Link href="/role">
+      <AppSubmenu key={AppMenuKeys.roleSubMenu} title="Role" owners={[manager]}>
+        <AppMenuItem key={AppMenuKeys.rolelist} owners={[manager]}>
+          <Link href={AppMenuKeys.rolelist}>
             <a>Role List</a>
           </Link>
         </AppMenuItem>
       </AppSubmenu>
-      <AppSubmenu key="/setting" icon={<SettingOutlined />} title="Setting" owners={[manager]}>
-        <AppMenuItem key="/setting" owners={[manager]}>Password</AppMenuItem>
+      <AppSubmenu key={AppMenuKeys.settingSubMenu} icon={<SettingOutlined />} title="Setting" owners={[manager]} >
+        <AppMenuItem key={AppMenuKeys.settingPassword} owners={[manager]}>
+          Password
+        </AppMenuItem>
       </AppSubmenu>
     </Menu>
   );
