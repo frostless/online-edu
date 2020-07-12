@@ -18,6 +18,8 @@ class LayoutService {
       return "Course List";
     } else if (currentPath === "manager") {
       return "Manager List";
+    } else if (currentPath === "role") {
+      return "Role List";
     }
   }
 
