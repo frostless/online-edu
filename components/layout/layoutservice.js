@@ -16,6 +16,8 @@ class LayoutService {
       return "Student List";
     } else if (currentPath === "course") {
       return "Course List";
+    } else if (currentPath === "manager") {
+      return "Manager List";
     }
   }
 

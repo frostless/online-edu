@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../../lib/api";
-import { Table, Space, Popconfirm, message } from 'antd';
-import Link from 'next/link'
+import { Table, Space, Popconfirm, message ,Button } from 'antd';
+import EditManagerModal from "./editmanagermodal";
 import SearchBar from "../searchbar";
 import Helper from "../../lib/helper"
 
@@ -16,7 +16,12 @@ function  ManagerList() {
     setSearch(value);
   };
 
+  const [managerID, setManagerID] = useState();
   const [updateCounter, setUpdateCounter] = useState(0);
+  const handleManagerdded = () => {
+    setUpdateCounter(updateCounter + 1);
+  };
+
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10, showSizeChanger: true });
 
@@ -51,6 +56,14 @@ function  ManagerList() {
     fetchData();
   }, [updateCounter, search]);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    if (modalVisible) {
+      setManagerID();
+    }
+    setModalVisible(!modalVisible);
+  };
+
   const onDelete = async (manager) => {
     const res = await API.deleteManager({ id: manager["id"] });
     let success = API.CheckAPIResult(res);
@@ -69,11 +82,20 @@ function  ManagerList() {
 
   return (
     <React.Fragment>
+      <div>
+        <Button type="primary" onClick={toggleModal}>
+          Add Manager
+        </Button>
+      </div>
+      <br />
+      <EditManagerModal
+        visible={modalVisible}
+        handleManagerAdded={handleManagerdded}
+        toggleModal={toggleModal}
+        managerID={managerID}
+      />
       <div style={{ width: "30%" }}>
-        <SearchBar
-          placeHolder="search by name"
-          onSearch={onSearch}
-        />
+        <SearchBar placeHolder="search by name" onSearch={onSearch} />
       </div>
       <br />
       <Table dataSource={managerData} onChange={onTableChange} loading={loading} pagination={pagination}>
@@ -90,12 +112,19 @@ function  ManagerList() {
           dataIndex="action"
           render={(text, record) => (
             <Space size="middle">
-              <Link href={`/manager/editmanager?id=${record["id"]}`}>
-                <a>Edit</a>
-              </Link>
+              <a
+                onClick={() => {
+                  toggleModal();
+                  setManagerID(record["id"]);
+                }}
+              >
+                Edit
+              </a>
               <Popconfirm
                 title="Are you sure to delete this manager?"
-                onConfirm={()=>{onDelete(record)}}
+                onConfirm={() => {
+                  onDelete(record);
+                }}
                 okText="Yes"
                 cancelText="No"
               >
