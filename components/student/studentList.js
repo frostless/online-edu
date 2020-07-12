@@ -51,7 +51,6 @@ function StudentList() {
       });
       setPagination({
         ...pagination,
-        current: Math.min(++res.data["pager"]["page"], pagination.current),
         total: res.data["pager"]["rowcount"],
       });
       setStudentData(data);
