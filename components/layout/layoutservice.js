@@ -20,6 +20,10 @@ class LayoutService {
       return "Manager List";
     } else if (currentPath === "role") {
       return "Role List";
+    } else if (currentPath === "teacher") {
+      return "Teacher List";
+    } else if (currentPath === "setting") {
+      return "setting";
     }
   }
 
