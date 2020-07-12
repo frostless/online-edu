@@ -32,24 +32,46 @@ function AppMenu() {
       openKeys={openKeys}
       onOpenChange={onOpenChange}
     >
-      <AppSubmenu key={AppMenuKeys.studentSubMenu} icon={<TeamOutlined />} title="Students" owners={[student, teacher, manager]} >
-        <AppMenuItem key={AppMenuKeys.studentList} icon={<TeamOutlined />} owners={[teacher, manager]} >
+      <AppSubmenu
+        key={AppMenuKeys.studentSubMenu}
+        icon={<TeamOutlined />}
+        title="Students"
+        owners={[student, teacher, manager]}
+      >
+        <AppMenuItem
+          key={AppMenuKeys.studentList}
+          icon={<TeamOutlined />}
+          owners={[teacher, manager]}
+        >
           <Link href={AppMenuKeys.studentList}>
             <a>Student List</a>
           </Link>
         </AppMenuItem>
-        <AppMenuItem key={AppMenuKeys.editStudent} icon={<UserAddOutlined />} owners={[teacher, manager]} >
+        <AppMenuItem
+          key={AppMenuKeys.editStudent}
+          icon={<UserAddOutlined />}
+          owners={[teacher, manager]}
+        >
           <Link href={AppMenuKeys.editStudent}>
             <a>Add Student</a>
           </Link>
         </AppMenuItem>
-        <AppMenuItem key={AppMenuKeys.studentSelection} icon={<SelectOutlined />} owners={[teacher, student]} >
+        <AppMenuItem
+          key={AppMenuKeys.studentSelection}
+          icon={<SelectOutlined />}
+          owners={[teacher, student]}
+        >
           <Link href={AppMenuKeys.studentSelection}>
             <a>Selections</a>
           </Link>
         </AppMenuItem>
       </AppSubmenu>
-      <AppSubmenu key={AppMenuKeys.courseSubMenu} icon={<BookOutlined />} title="Course" owners={[teacher]} >
+      <AppSubmenu
+        key={AppMenuKeys.courseSubMenu}
+        icon={<BookOutlined />}
+        title="Course"
+        owners={[teacher]}
+      >
         <AppMenuItem key={AppMenuKeys.courselist} owners={[teacher]}>
           <Link href={AppMenuKeys.courselist}>
             <a>Course List</a>
@@ -61,7 +83,9 @@ function AppMenu() {
           </Link>
         </AppMenuItem>
         <AppMenuItem key={AppMenuKeys.courseType} owners={[teacher]}>
-          Course Type
+          <Link href={AppMenuKeys.courseType}>
+            <a>Course Type</a>
+          </Link>
         </AppMenuItem>
       </AppSubmenu>
       <AppSubmenu
@@ -70,7 +94,11 @@ function AppMenu() {
         icon={<TeamOutlined />}
         owners={[manager]}
       >
-        <AppMenuItem key={AppMenuKeys.teacherList} icon={<TeamOutlined />} owners={[manager]}>
+        <AppMenuItem
+          key={AppMenuKeys.teacherList}
+          icon={<TeamOutlined />}
+          owners={[manager]}
+        >
           <Link href={AppMenuKeys.teacherList}>
             <a>Teacher List</a>
           </Link>
@@ -82,7 +110,11 @@ function AppMenu() {
         icon={<TeamOutlined />}
         owners={[manager]}
       >
-        <AppMenuItem key={AppMenuKeys.managerList} icon={<TeamOutlined />} owners={[manager]}>
+        <AppMenuItem
+          key={AppMenuKeys.managerList}
+          icon={<TeamOutlined />}
+          owners={[manager]}
+        >
           <Link href={AppMenuKeys.managerList}>
             <a>Manager List</a>
           </Link>
@@ -95,7 +127,12 @@ function AppMenu() {
           </Link>
         </AppMenuItem>
       </AppSubmenu>
-      <AppSubmenu key={AppMenuKeys.settingSubMenu} icon={<SettingOutlined />} title="Setting" owners={[manager]} >
+      <AppSubmenu
+        key={AppMenuKeys.settingSubMenu}
+        icon={<SettingOutlined />}
+        title="Setting"
+        owners={[manager]}
+      >
         <AppMenuItem key={AppMenuKeys.settingPassword} owners={[manager]}>
           Password
         </AppMenuItem>

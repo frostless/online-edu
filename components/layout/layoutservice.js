@@ -5,11 +5,13 @@ class LayoutService {
     const secondaryPath = path.split("/")[2];
     if (secondaryPath === "editcourse") {
       return id ? "Edit Course" : "Add Course";
+    } else if (secondaryPath === "coursetype") {
+      return "Course Type";
     } else if (secondaryPath === "editstudent") {
-      return id ? "Edit Student": "Add Student";
+      return id ? "Edit Student" : "Add Student";
     } else if (secondaryPath === "selections") {
       return "Selections";
-    }
+    } 
 
     const currentPath = path.split("/")[1];
     if (currentPath === "student") {
