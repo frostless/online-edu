@@ -41,6 +41,7 @@ function  ManagerList() {
         return {
           ...item,
           key: item["id"],
+          role: item["role"]["name"],
           name: item["nickname"]
         };
       });
@@ -107,6 +108,7 @@ function  ManagerList() {
           sorter={(a, b) => a["name"].localeCompare(b["name"])}
         />
         <Column title="Email" dataIndex="email" key="email" />
+        <Column title="Role" dataIndex="role" key="role" />
         <Column
           title="Action"
           dataIndex="action"
