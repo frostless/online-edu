@@ -13,7 +13,7 @@ function AppMenu() {
   const [selectedKeys, SetSelectedKeys] = useState([]);
   const router = useRouter();
   const path = router.pathname;
-  const {student, manager, teacher } = loginTypes;
+  const {student, teacher } = loginTypes;
 
   useEffect(() => {
     SetOpenKeys(LayoutService.getOpenKeys(path));
@@ -36,12 +36,12 @@ function AppMenu() {
         key={AppMenuKeys.studentSubMenu}
         icon={<TeamOutlined />}
         title="Students"
-        owners={[student, teacher, manager]}
+        owners={[student, teacher]}
       >
         <AppMenuItem
           key={AppMenuKeys.studentList}
           icon={<TeamOutlined />}
-          owners={[teacher, manager]}
+          owners={[teacher]}
         >
           <Link href={AppMenuKeys.studentList}>
             <a>Student List</a>
@@ -50,7 +50,7 @@ function AppMenu() {
         <AppMenuItem
           key={AppMenuKeys.editStudent}
           icon={<UserAddOutlined />}
-          owners={[teacher, manager]}
+          owners={[teacher]}
         >
           <Link href={AppMenuKeys.editStudent}>
             <a>Add Student</a>
@@ -91,14 +91,10 @@ function AppMenu() {
       <AppSubmenu
         key={AppMenuKeys.teacherSubMenu}
         title="Teacher"
-        icon={<TeamOutlined />}
-        owners={[manager]}
-      >
+        icon={<TeamOutlined />}>
         <AppMenuItem
           key={AppMenuKeys.teacherList}
-          icon={<TeamOutlined />}
-          owners={[manager]}
-        >
+          icon={<TeamOutlined />}>
           <Link href={AppMenuKeys.teacherList}>
             <a>Teacher List</a>
           </Link>
@@ -107,21 +103,17 @@ function AppMenu() {
       <AppSubmenu
         key={AppMenuKeys.managerSubMenu}
         title="Manager"
-        icon={<TeamOutlined />}
-        owners={[manager]}
-      >
+        icon={<TeamOutlined />}>
         <AppMenuItem
           key={AppMenuKeys.managerList}
-          icon={<TeamOutlined />}
-          owners={[manager]}
-        >
+          icon={<TeamOutlined />}>
           <Link href={AppMenuKeys.managerList}>
             <a>Manager List</a>
           </Link>
         </AppMenuItem>
       </AppSubmenu>
-      <AppSubmenu key={AppMenuKeys.roleSubMenu} title="Role" owners={[manager]}>
-        <AppMenuItem key={AppMenuKeys.rolelist} owners={[manager]}>
+      <AppSubmenu key={AppMenuKeys.roleSubMenu} title="Role">
+        <AppMenuItem key={AppMenuKeys.rolelist}>
           <Link href={AppMenuKeys.rolelist}>
             <a>Role List</a>
           </Link>
@@ -130,10 +122,8 @@ function AppMenu() {
       <AppSubmenu
         key={AppMenuKeys.settingSubMenu}
         icon={<SettingOutlined />}
-        title="Setting"
-        owners={[manager]}
-      >
-        <AppMenuItem key={AppMenuKeys.settingPassword} owners={[manager]}>
+        title="Setting">
+        <AppMenuItem key={AppMenuKeys.settingPassword}>
           Password
         </AppMenuItem>
       </AppSubmenu>

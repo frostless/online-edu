@@ -44,6 +44,9 @@ function LoginForm(props) {
       const { token, login_type } = res.data["datas"];
       User.saveToken(token);
       User.saveLoginType(login_type);
+      if (loginType === manager) {
+        User.savePermittedMenus(res.data["datas"]["info"]["role"]["menu"]);
+      }
       Router.push("/index");
     } else {
       showloginError(res["msg"]);

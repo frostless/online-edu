@@ -1,4 +1,4 @@
-import { RoleMenus } from "../layout/appmenuconfig";
+import { PermittedMenus } from "../layout/appmenuconfig";
 import { TreeSelect } from "antd";
 const { TreeNode } = TreeSelect;
 
@@ -6,26 +6,26 @@ const getMenus = () => {
     return (
       <React.Fragment>
         <TreeNode value="student" title="Student" disabled>
-          <TreeNode value={RoleMenus.stuedentList} title="Student List" />
-          <TreeNode value={RoleMenus.studentEdit} title="Student Edit" />
-          <TreeNode value={RoleMenus.studentSelection} title="Student Selection" />
+          <TreeNode value={PermittedMenus.studentList} title="Student List" />
+          <TreeNode value={PermittedMenus.studentEdit} title="Student Edit" />
+          <TreeNode value={PermittedMenus.studentSelection} title="Student Selection" />
         </TreeNode>
         <TreeNode value="course" title="Course" disabled>
-          <TreeNode value={RoleMenus.courselist} title="Course List" />
-          <TreeNode value={RoleMenus.courseEdit} title="Course Edit" />
-          <TreeNode value={RoleMenus.courseTypelist} title="Course Type list" />
+          <TreeNode value={PermittedMenus.courselist} title="Course List" />
+          <TreeNode value={PermittedMenus.courseEdit} title="Course Edit" />
+          <TreeNode value={PermittedMenus.courseTypelist} title="Course Type list" />
         </TreeNode>
         <TreeNode value="teacher" title="Teacher" disabled>
-          <TreeNode value={RoleMenus.teacherList} title="Teacher List" />
+          <TreeNode value={PermittedMenus.teacherList} title="Teacher List" />
         </TreeNode>
         <TreeNode value="manager" title="Manager" disabled>
-          <TreeNode value={RoleMenus.managerList} title="Manager List" />
+          <TreeNode value={PermittedMenus.managerList} title="Manager List" />
         </TreeNode>
         <TreeNode value="role" title="Role" disabled>
-          <TreeNode value={RoleMenus.rolelist} title="Role List" />
+          <TreeNode value={PermittedMenus.rolelist} title="Role List" />
         </TreeNode>
         <TreeNode value="setting" title="Setting" disabled>
-          <TreeNode value={RoleMenus.password} title="Password" />
+          <TreeNode value={PermittedMenus.password} title="Password" />
         </TreeNode>
       </React.Fragment>
     );
