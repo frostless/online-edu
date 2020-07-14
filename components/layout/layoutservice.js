@@ -1,30 +1,36 @@
+import { AppMenuKeys } from "./appmenuconfig";
+
+const getSecondaryPathByString = (string) => {
+  return string.split('/').pop()
+};
+
 class LayoutService {
   static getBreadcrumbName(path, query) {
     const { id } = query;
 
     const secondaryPath = path.split("/")[2];
-    if (secondaryPath === "editcourse") {
+    if (secondaryPath === getSecondaryPathByString(AppMenuKeys.editCourse)) {
       return id ? "Edit Course" : "Add Course";
-    } else if (secondaryPath === "coursetype") {
+    } else if (secondaryPath === getSecondaryPathByString(AppMenuKeys.courseType)) {
       return "Course Type";
-    } else if (secondaryPath === "editstudent") {
+    } else if (secondaryPath === getSecondaryPathByString(AppMenuKeys.editStudent)) {
       return id ? "Edit Student" : "Add Student";
-    } else if (secondaryPath === "selections") {
+    } else if (secondaryPath === getSecondaryPathByString(AppMenuKeys.studentSelection)) {
       return "Selections";
     } 
 
     const currentPath = path.split("/")[1];
-    if (currentPath === "students") {
+    if (currentPath === AppMenuKeys.studentSubMenu) {
       return "Student List";
-    } else if (currentPath === "course") {
+    } else if (currentPath === AppMenuKeys.courseSubMenu) {
       return "Course List";
-    } else if (currentPath === "manager") {
+    } else if (currentPath === AppMenuKeys.managerSubMenu) {
       return "Manager List";
-    } else if (currentPath === "role") {
+    } else if (currentPath === AppMenuKeys.roleSubMenu) {
       return "Role List";
-    } else if (currentPath === "teacher") {
+    } else if (currentPath === AppMenuKeys.teacherSubMenu) {
       return "Teacher List";
-    } else if (currentPath === "settings") {
+    } else if (currentPath === AppMenuKeys.settingSubMenu) {
       return "Settings";
     }
   }
