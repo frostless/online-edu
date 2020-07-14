@@ -74,20 +74,6 @@ function EditCourse(props) {
     return course;
   };
 
-  const getSuccessTitle = () => {
-    return isNewCourse ? "Adding Course Successfully" : "Editing Course Successfully";
-  };
-
-  const getFailueTitle = () => {
-    return isNewCourse ? "Adding Course Failed" : "Editing Course Failed";
-  };
-
-  const getSuccessContent = (courseName) => {
-    return isNewCourse
-      ? `Course '${courseName}' has been added successfully`
-      : `Course '${courseName}' has been edited successfully`;
-  };
-
   const onFinish = async (input) => {
     setLoading(true);
     const { courseName } = input;
@@ -101,14 +87,15 @@ function EditCourse(props) {
 
     let success = API.CheckAPIResult(res);
     if (!success) {
-      Notification.notify(getFailueTitle(), `Error Code: ${res['code']}, Error Message: ${res['msg']}`);
+      Notification.notify(`${isNewCourse? "Added": "Edited"} Course Failed`, 
+        `Error Code: ${res['code']}, Error Message: ${res['msg']}`);
       setLoading(false);
       return;
     }
 
     Notification.notify(
-      getSuccessTitle(),
-      getSuccessContent(courseName)
+      `${isNewCourse? "Added": "Edited"}  Course Successfully`,
+      `Course '${courseName}' has been ${isNewCourse? "added": "edited"} successfully`
     );
     setLoading(false);
   };

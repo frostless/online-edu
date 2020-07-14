@@ -131,7 +131,7 @@ function StudentList() {
           dataIndex="action"
           render={(text, record) => (
             <Space size="middle">
-              <Link href={`/student/editstudent?id=${record["id"]}`}>
+              <Link href={`/students/editstudent?id=${record["id"]}`}>
                 <a>Edit</a>
               </Link>
               <Popconfirm

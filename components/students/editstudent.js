@@ -79,22 +79,6 @@ function EditStudent(props) {
     return student;
   };
 
-  const getSuccessTitle = () => {
-    return isNewStudent
-      ? "Adding Student Successfully"
-      : "Editing Student Successfully";
-  };
-
-  const getFailueTitle = () => {
-    return isNewStudent ? "Adding Student Failed" : "Editing Student Failed";
-  };
-
-  const getSuccessContent = (studentName) => {
-    return isNewStudent
-      ? `Student '${studentName}' has been added successfully`
-      : `Student '${studentName}' has been edited successfully`;
-  };
-
   const onFinish = async (input) => {
     setLoading(true);
     const { studentName } = input;
@@ -108,13 +92,14 @@ function EditStudent(props) {
 
     let success = API.CheckAPIResult(res);
     if (!success) {
-      Notification.notify(getFailueTitle(), `Error Code: ${res['code']}, Error Message: ${res['msg']}`);
+      Notification.notify(`${isNewStudent ? "Added" : "Edited"} Student Failed`, 
+        `Error Code: ${res['code']}, Error Message: ${res['msg']}`);
       setLoading(false);
       return;
     }
 
-    Notification.notify(getSuccessTitle(), 
-      getSuccessContent(studentName));
+    Notification.notify(`${isNewStudent ? "Added" : "Edited"}  Student Successfully`, 
+      `Student '${studentName}' has been ${isNewStudent ? "added" : "edited"} successfully`);
       setLoading(false);
   };
 
