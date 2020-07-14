@@ -28,7 +28,7 @@ function EditRoleModal(props) {
           return;
         }
 
-        const role = res.data.datas[0];
+        const role = res.data.datas;
         form.setFieldsValue(role);
         setLoading(false);
       });

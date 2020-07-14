@@ -54,7 +54,7 @@ function EditManagerModal(props) {
           return;
         }
 
-        const manager = res.data.datas[0];
+        const manager = res.data.datas;
         form.setFieldsValue(manager);
         setLoading(false);
       });

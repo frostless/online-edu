@@ -21,7 +21,7 @@ function EditTeacherModal(props) {
           return;
         }
 
-        const teacher = res.data.datas[0];
+        const teacher = res.data.datas;
         form.setFieldsValue(teacher);
         setLoading(false);
       });
