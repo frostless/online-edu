@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import Router from "next/router";
 import User from "../lib/user";
 import LoginTypes from "../components/types/logintypes"
+import { AppMenuKeys } from "../components/layout/appmenuconfig";
 
 function HomePage() {
   const { student, teacher, manager } = LoginTypes;
@@ -14,11 +15,11 @@ function HomePage() {
     } else {
       const loginType = User.getLoginType();
       if (loginType === teacher) {
-        Router.push("/student");
+        Router.push(AppMenuKeys.studentList);
       } else if (loginType === student) {
-        Router.push("/student/selections");
+        Router.push(AppMenuKeys.studentSelection);
       } else if (loginType === manager) {
-        Router.push("/student");
+        Router.push(AppMenuKeys.studentList);
       }
     }
   });

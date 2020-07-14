@@ -14,7 +14,7 @@ class LayoutService {
     } 
 
     const currentPath = path.split("/")[1];
-    if (currentPath === "student") {
+    if (currentPath === "students") {
       return "Student List";
     } else if (currentPath === "course") {
       return "Course List";
@@ -24,8 +24,8 @@ class LayoutService {
       return "Role List";
     } else if (currentPath === "teacher") {
       return "Teacher List";
-    } else if (currentPath === "setting") {
-      return "setting";
+    } else if (currentPath === "settings") {
+      return "Settings";
     }
   }
 

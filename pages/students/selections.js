@@ -1,5 +1,5 @@
 import AppLayout from "../../components/layout/appLayout";
-import Selections from "../../components/student/selections/home";
+import Selections from "../../components/students/selections/home";
 
 const HomePage = () => {
   return <AppLayout content={new Selections()} />;

@@ -1,5 +1,5 @@
 import AppLayout from "../../components/layout/appLayout";
-import EditStudent from "../../components/student/editstudent";
+import EditStudent from "../../components/students/editstudent";
 
 const HomePage = ({ id }) => {
   return <AppLayout content={new EditStudent({ id: id })} />;

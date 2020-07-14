@@ -1,8 +1,8 @@
 const AppMenuKeys = {
-  studentSubMenu: "student",
-  studentList: "/student",
-  editStudent: "/student/editstudent",
-  studentSelection: "/student/selections",
+  studentSubMenu: "students",
+  studentList: "/students",
+  editStudent: "/students/editstudent",
+  studentSelection: "/students/selections",
   courseSubMenu: "course",
   courselist: "/course",
   editCourse: "/course/editcourse",
@@ -13,8 +13,8 @@ const AppMenuKeys = {
   managerList: "/manager",
   roleSubMenu: "role",
   rolelist: "/role",
-  settingSubMenu: "setting",
-  settingPassword: "/setting",
+  settingSubMenu: "settings",
+  settingPassword: "/settings",
 };
 
 const PermittedMenus = {

@@ -122,9 +122,11 @@ function AppMenu() {
       <AppSubmenu
         key={AppMenuKeys.settingSubMenu}
         icon={<SettingOutlined />}
-        title="Setting">
-        <AppMenuItem key={AppMenuKeys.settingPassword}>
-          Password
+        title="Settings">
+        <AppMenuItem key={AppMenuKeys.settingPassword}>         
+          <Link href={AppMenuKeys.settingPassword}>
+            <a>Change Password</a>
+          </Link>
         </AppMenuItem>
       </AppSubmenu>
     </Menu>
