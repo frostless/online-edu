@@ -1,10 +1,12 @@
 const AppMenuKeys = {
+  homeSubMenu:"home",
+  dashBoard: "/home",
   studentSubMenu: "students",
   studentList: "/students",
   editStudent: "/students/editstudent",
   studentSelection: "/students/selections",
   courseSubMenu: "course",
-  courselist: "/course",
+  courseList: "/course",
   editCourse: "/course/editcourse",
   courseType: "/course/coursetype",
   teacherSubMenu: "teacher",
@@ -12,35 +14,41 @@ const AppMenuKeys = {
   managerSubMenu: "manager",
   managerList: "/manager",
   roleSubMenu: "role",
-  rolelist: "/role",
+  roleList: "/role",
   settingSubMenu: "settings",
   settingPassword: "/settings",
 };
 
 const PermittedMenus = {
+  dashBoard: "-dashboard",
   studentList: "-student-list",
   studentEdit: "-student-edit",
   studentSelection: "-student-selection",
-  courselist: "-course-list",
+  courseList: "-course-list",
   courseEdit: "-course-edit",
   courseTypelist: "-course-type-list",
   teacherList: "-teacher-list",
   managerList: "-manager-list",
-  rolelist: "-role-list",
+  roleList: "-role-list",
   password: "-password",
 };
 
 const PermittedMenuMapToMenuKey = {
+  [PermittedMenus.dashBoard]: AppMenuKeys.dashBoard,
   [PermittedMenus.studentList]: AppMenuKeys.studentList,
   [PermittedMenus.studentEdit]: AppMenuKeys.editStudent,
   [PermittedMenus.studentSelection]: AppMenuKeys.studentSelection,
-  [PermittedMenus.courselist]: AppMenuKeys.courselist,
+  [PermittedMenus.courseList]: AppMenuKeys.courseList,
   [PermittedMenus.courseEdit]: AppMenuKeys.editCourse,
   [PermittedMenus.courseTypelist]: AppMenuKeys.courseType,
   [PermittedMenus.teacherList]: AppMenuKeys.teacherList,
   [PermittedMenus.managerList]: AppMenuKeys.managerList,
-  [PermittedMenus.rolelist]: AppMenuKeys.rolelist,
+  [PermittedMenus.roleList]: AppMenuKeys.roleList,
   [PermittedMenus.password]: AppMenuKeys.settingPassword,
+};
+
+const getHomeMenus = () => {
+  return [PermittedMenus.dashBoard];
 };
 
 const getStudentMenus = () => {
@@ -48,7 +56,7 @@ const getStudentMenus = () => {
 };
 
 const getCourseMenus = () => {
-  return [PermittedMenus.courseEdit, PermittedMenus.courselist, PermittedMenus.courseTypelist];
+  return [PermittedMenus.courseEdit, PermittedMenus.courseList, PermittedMenus.courseTypelist];
 };
 
 const getTeacherMenus = () => {
@@ -60,7 +68,7 @@ const getManagerMenus = () => {
 };
 
 const getRoleMenus = () => {
-  return [PermittedMenus.rolelist];
+  return [PermittedMenus.roleList];
 };
 
 const getSettingMenus = () => {
@@ -69,7 +77,9 @@ const getSettingMenus = () => {
 
 const getMenusByKey = (key) => {
   let menus = [];
-  if (key === AppMenuKeys.studentSubMenu) {
+  if (key === AppMenuKeys.homeSubMenu) {
+    menus = getHomeMenus();
+  } else if (key === AppMenuKeys.studentSubMenu) {
     menus = getStudentMenus();
   } else if (key === AppMenuKeys.courseSubMenu) {
     menus = getCourseMenus();
@@ -87,10 +97,10 @@ const getMenusByKey = (key) => {
 
 const shouldSubMenuVisible = (subMenuKey, permittedMenus) => {
   let menus = getMenusByKey(subMenuKey);
-  let shouldSubMenuVisible = menus.some((item) => {
+  let visible = menus.some((item) => {
     return permittedMenus.includes(item);
   });
-  return shouldSubMenuVisible;
+  return visible;
 };
 
 const convertPermittedMenutoMenuKeys = (permittedMenus) => {

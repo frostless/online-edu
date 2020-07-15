@@ -19,7 +19,7 @@ function HomePage() {
       } else if (loginType === student) {
         Router.push(AppMenuKeys.studentSelection);
       } else if (loginType === manager) {
-        Router.push(AppMenuKeys.studentList);
+        Router.push(AppMenuKeys.dashBoard);
       }
     }
   });

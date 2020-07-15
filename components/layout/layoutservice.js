@@ -32,6 +32,8 @@ class LayoutService {
       return "Teacher List";
     } else if (currentPath === AppMenuKeys.settingSubMenu) {
       return "Settings";
+    } else if (currentPath === AppMenuKeys.homeSubMenu) {
+      return "Dash Board";
     }
   }
 
