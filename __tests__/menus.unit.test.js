@@ -1,44 +1,44 @@
 import { PermittedMenus, AppMenuKeys,  shouldSubMenuVisible, shouldMenItemVisible } from "../components/layout/appmenuconfig";
 
 describe("App menus' visibility should return correctly based on the permitted menus", () => {
-    it("Submenu visibility should return false if none of its secondary menus is included on permitted menus", () => {
+    it("SubMenu visibility should return false if none of its secondary menus is included on permitted menus", () => {
         let permittedMenus = [];
-        let subMenukey = AppMenuKeys.studentSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(false); 
-        subMenukey = AppMenuKeys.courseSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(false); 
-        subMenukey = AppMenuKeys.homeSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(false); 
-        subMenukey = AppMenuKeys.teacherSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(false); 
-        subMenukey = AppMenuKeys.managerSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(false); 
-        subMenukey = AppMenuKeys.roleSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(false); 
-        subMenukey = AppMenuKeys.settingSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(false); 
+        let subMenuKey = AppMenuKeys.studentSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(false); 
+        subMenuKey = AppMenuKeys.courseSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(false); 
+        subMenuKey = AppMenuKeys.homeSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(false); 
+        subMenuKey = AppMenuKeys.teacherSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(false); 
+        subMenuKey = AppMenuKeys.managerSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(false); 
+        subMenuKey = AppMenuKeys.roleSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(false); 
+        subMenuKey = AppMenuKeys.settingSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(false); 
     });
 
-    it("Submenu visibility should return true if any of its secondary menus is included in permitted menus", () => {
+    it("SubMenu visibility should return true if any of its secondary menus is included in permitted menus", () => {
         let permittedMenus = [PermittedMenus.studentList];
-        let subMenukey = AppMenuKeys.studentSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(true); 
+        let subMenuKey = AppMenuKeys.studentSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(true); 
 
         permittedMenus = [PermittedMenus.studentList, PermittedMenus.courseList];
-        subMenukey = AppMenuKeys.courseSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(true); 
+        subMenuKey = AppMenuKeys.courseSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(true); 
 
         permittedMenus = [PermittedMenus.studentList, PermittedMenus.courseList,
         PermittedMenus.teacherList, PermittedMenus.managerList, PermittedMenus.roleList,
         PermittedMenus.password];
-        subMenukey = AppMenuKeys.teacherSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(true); 
-        subMenukey = AppMenuKeys.managerSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(true); 
-        subMenukey = AppMenuKeys.roleSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(true); 
-        subMenukey = AppMenuKeys.settingSubMenu;
-        expect(shouldSubMenuVisible(subMenukey, permittedMenus)).toBe(true); 
+        subMenuKey = AppMenuKeys.teacherSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(true); 
+        subMenuKey = AppMenuKeys.managerSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(true); 
+        subMenuKey = AppMenuKeys.roleSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(true); 
+        subMenuKey = AppMenuKeys.settingSubMenu;
+        expect(shouldSubMenuVisible(subMenuKey, permittedMenus)).toBe(true); 
     });
 
     it("Secondary menu visibility should return false if it is not included in the permitted menu", () => {
@@ -70,7 +70,7 @@ describe("App menus' visibility should return correctly based on the permitted m
     it("Secondary menu visibility should return true it is included in the permitted menus", () => {
         let permittedMenus = [PermittedMenus.studentList, PermittedMenus.studentSelection,
         PermittedMenus.studentEdit, PermittedMenus.courseList, PermittedMenus.courseEdit,
-        PermittedMenus.courseTypelist, PermittedMenus.teacherList, PermittedMenus.managerList,
+        PermittedMenus.courseTypeList, PermittedMenus.teacherList, PermittedMenus.managerList,
         PermittedMenus.roleList, PermittedMenus.password];
         let menuItemKey = AppMenuKeys.settingPassword;
         expect(shouldMenItemVisible(menuItemKey, permittedMenus)).toBe(true); 

@@ -1,3 +1,4 @@
+import React from 'react';
 import { PermittedMenus } from "../layout/appmenuconfig";
 import { TreeSelect } from "antd";
 const { TreeNode } = TreeSelect;
@@ -16,7 +17,7 @@ const getMenus = () => {
         <TreeNode value="course" title="Course" disabled>
           <TreeNode value={PermittedMenus.courseList} title="Course List" />
           <TreeNode value={PermittedMenus.courseEdit} title="Course Edit" />
-          <TreeNode value={PermittedMenus.courseTypelist} title="Course Type list" />
+          <TreeNode value={PermittedMenus.courseTypeList} title="Course Type list" />
         </TreeNode>
         <TreeNode value="teacher" title="Teacher" disabled>
           <TreeNode value={PermittedMenus.teacherList} title="Teacher List" />

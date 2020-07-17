@@ -26,7 +26,7 @@ const PermittedMenus = {
   studentSelection: "-student-selection",
   courseList: "-course-list",
   courseEdit: "-course-edit",
-  courseTypelist: "-course-type-list",
+  courseTypeList: "-course-type-list",
   teacherList: "-teacher-list",
   managerList: "-manager-list",
   roleList: "-role-list",
@@ -40,7 +40,7 @@ const PermittedMenuMapToMenuKey = {
   [PermittedMenus.studentSelection]: AppMenuKeys.studentSelection,
   [PermittedMenus.courseList]: AppMenuKeys.courseList,
   [PermittedMenus.courseEdit]: AppMenuKeys.editCourse,
-  [PermittedMenus.courseTypelist]: AppMenuKeys.courseType,
+  [PermittedMenus.courseTypeList]: AppMenuKeys.courseType,
   [PermittedMenus.teacherList]: AppMenuKeys.teacherList,
   [PermittedMenus.managerList]: AppMenuKeys.managerList,
   [PermittedMenus.roleList]: AppMenuKeys.roleList,
@@ -56,7 +56,7 @@ const getStudentMenus = () => {
 };
 
 const getCourseMenus = () => {
-  return [PermittedMenus.courseEdit, PermittedMenus.courseList, PermittedMenus.courseTypelist];
+  return [PermittedMenus.courseEdit, PermittedMenus.courseList, PermittedMenus.courseTypeList];
 };
 
 const getTeacherMenus = () => {
@@ -103,7 +103,7 @@ const shouldSubMenuVisible = (subMenuKey, permittedMenus) => {
   return visible;
 };
 
-const convertPermittedMenutoMenuKeys = (permittedMenus) => {
+const convertPermittedMenuToMenuKeys = (permittedMenus) => {
   let menus =[];
   permittedMenus.forEach((item)=>{
     const menu = PermittedMenuMapToMenuKey[item];
@@ -113,7 +113,7 @@ const convertPermittedMenutoMenuKeys = (permittedMenus) => {
 };
 
 const shouldMenItemVisible = (menuItemKey, permittedMenus) => {
-  let menus = convertPermittedMenutoMenuKeys(permittedMenus);
+  let menus = convertPermittedMenuToMenuKeys(permittedMenus);
   let visible = menus.includes(menuItemKey);
   return visible;
 };
