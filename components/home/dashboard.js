@@ -92,8 +92,8 @@ function DashBoard() {
 
     return (
         <React.Fragment>
-            <Line {...lineConfig} />
-            <Pie {...pieConfig} />
+            {lineConfig && <Line {...lineConfig} />}
+            {pieConfig && <Pie {...pieConfig} />}
         </React.Fragment>
     )
 }

@@ -1,3 +1,4 @@
+// Menu URLs are also used as keys here, for simplicity purpose
 const AppMenuKeys = {
   homeSubMenu:"home",
   dashBoard: "/home",

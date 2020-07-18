@@ -18,7 +18,7 @@ function  ManagerList() {
 
   const [managerID, setManagerID] = useState();
   const [updateCounter, setUpdateCounter] = useState(0);
-  const handleManagerdded = () => {
+  const handleManagerAdded = () => {
     setUpdateCounter(updateCounter + 1);
   };
 
@@ -91,7 +91,7 @@ function  ManagerList() {
       <br />
       <EditManagerModal
         visible={modalVisible}
-        handleManagerAdded={handleManagerdded}
+        handleManagerAdded={handleManagerAdded}
         toggleModal={toggleModal}
         managerID={managerID}
       />
