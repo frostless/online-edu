@@ -32,6 +32,7 @@ const StyledLayoutDiv= styled.div`
 // End Style Components
 
 function AppLayout(props) {
+  const { noShareLayout } = props;
   const [collapsed, ToggleCollapse] = useState(false);
 
   const onCollapse = (collapsed) => {
@@ -56,9 +57,16 @@ function AppLayout(props) {
         </StyledlayoutHeader>
         <Content style={{ margin: "0 16px" }}>
           <AppBreadcrumb />
-          <StyledLayoutDiv style={{ padding: 24, minHeight: 360 }}>
-            {props.content}
-          </StyledLayoutDiv>
+          {noShareLayout &&
+            <React.Fragment>
+              {props.content}
+            </React.Fragment>
+          }
+          {!noShareLayout &&
+            <StyledLayoutDiv style={{ padding: 24, minHeight: 360 }}>
+              {props.content}
+            </StyledLayoutDiv>
+          }
         </Content>
         <Footer style={{ textAlign: "center" }}>Curriculum Assistant</Footer>
       </Layout>

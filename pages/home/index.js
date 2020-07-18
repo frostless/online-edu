@@ -1,8 +1,8 @@
 import AppLayout from "../../components/layout/appLayout";
-import DashBoad from "../../components/home/dashboard";
+import DashBoard from "../../components/home/dashboard";
 
 function HomePage() {
-  return <AppLayout content={new DashBoad()} />
+  return <AppLayout noShareLayout="true" content={new DashBoard()} />
 }
 
 export default HomePage;

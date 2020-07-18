@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import line from 'next/dynamic'
 import pie from 'next/dynamic'
+import { Card } from "antd";
 import API from '../../lib/api'
 const Line = line(
     () => import('@ant-design/charts').then((mod) => mod.Line),
@@ -92,8 +93,9 @@ function DashBoard() {
 
     return (
         <React.Fragment>
-            {lineConfig && <Line {...lineConfig} />}
-            {pieConfig && <Pie {...pieConfig} />}
+            <Card>{lineConfig && <Line {...lineConfig} />}</Card>
+            <br/>
+            <Card>{pieConfig && <Pie {...pieConfig} />}</Card>
         </React.Fragment>
     )
 }
