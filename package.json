@@ -12,6 +12,7 @@
     "@ant-design/charts": "^0.9.7",
     "antd": "^4.3.3",
     "axios": "^0.19.2",
+    "cypress": "^4.11.0",
     "javascript-time-ago": "^2.0.7",
     "next": "9.4.4",
     "react": "16.13.1",
