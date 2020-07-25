@@ -7,7 +7,7 @@ const getMenus = () => {
     return (
       <React.Fragment>
         <TreeNode value="home" title="Home" disabled>
-          <TreeNode value={PermittedMenus.dashboard} title="Dashboard" />
+          <TreeNode value={PermittedMenus.dashBoard} title="Dashboard" />
         </TreeNode>
         <TreeNode value="student" title="Student" disabled>
           <TreeNode value={PermittedMenus.studentList} title="Student List" />
