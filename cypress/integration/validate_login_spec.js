@@ -1,11 +1,3 @@
-// describe('The Home Page', () => {
-//     it('successfully loads', () => {
-//         cy.visit('/') // change URL to match your dev URL
-//     })
-//     it('should log in successfully', () => {
-
-//     })
-// })
 describe('The Login Page', () => {
     // beforeEach(() => {
     //   // seed a user in the DB that we can control from our tests
@@ -21,8 +13,8 @@ describe('The Login Page', () => {
     // })
 
     it('should log in with info set in local storage', function () {
-        // destructuring assignment of the this.currentUser object
-        //   const { email, password } = this.currentUser
+        // Destructuring assignment of the this.currentUser object
+        // const { email, password } = this.currentUser
         const email = 'green@green.com'
         const password = '123456'
 
@@ -33,10 +25,11 @@ describe('The Login Page', () => {
         // {enter} causes the form to submit
         cy.get('input[type=password]').type(`${password}{enter}`)
 
-        // we should be redirected to /index
-        cy.url().should('include', '/index')
-
-        // token should be present
-        // expect(window.localStorage.getItem('token')).to.exist
+        // We should be redirected to /index
+        cy.url().should('include', '/index', () => {
+            // Token should be present
+            expect(localStorage.getItem("token")).to.exist()
+            expect(localStorage.getItem("loginType")).to.exist()
+        })
     })
 })
