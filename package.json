@@ -14,7 +14,7 @@
     "axios": "^0.19.2",
     "cypress": "^4.11.0",
     "javascript-time-ago": "^2.0.7",
-    "next": "9.4.4",
+    "next": "13.0.4",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "styled-components": "^5.1.1"
